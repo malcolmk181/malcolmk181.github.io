@@ -48,6 +48,25 @@ Serve small, fast, accessible pages directly from GitHub Pages. Favor the web pl
 - Avoid fixed heights for content and avoid horizontal page scrolling.
 - Keep focus and controls visible when using sticky or overlay UI.
 - Always support both light and dark mode. Default to the browser/OS preference via `prefers-color-scheme`, and always provide a visible control to override it.
+- Write pages to be e-reader friendly: size all text in `rem`/`em` (never fixed `px` for readable text), keep a comfortable line length (roughly 45-75 characters, e.g. a ~40rem content column), and use line-height around 1.5 or more.
+
+### Accessibility settings widget
+
+Every page includes the shared accessibility widget (theme + text size) via a single blocking script tag near the top of `<head>`:
+
+```html
+<script src="/assets/a11y-widget.js"></script>
+```
+
+This is the one sanctioned shared-file exception to "prefer one self-contained HTML file": the widget is genuinely reused across every page, so it lives once at `assets/a11y-widget.js` instead of being copy-pasted. Everything else about a page should still stay self-contained unless there's a similarly concrete reuse case.
+
+The widget applies theme and text size before first paint (avoiding a flash of the wrong setting), then injects a floating "Accessibility" button that opens a `<dialog>` with theme (system/light/dark) and text-size (small/normal/large/x-large) controls, persisted to `localStorage`.
+
+For a page to work correctly with it:
+
+- Define colors that respond to `:root[data-theme="light"]` and `:root[data-theme="dark"]`, with an `@media (prefers-color-scheme: dark)` fallback for when no override is set (see `index.html` for the pattern).
+- Size text in `rem`/`em` so the text-size control actually resizes it.
+- Use the root-absolute path `/assets/a11y-widget.js` (not a relative path) since this repo is a user site served at `/`, not a project site under a subpath.
 
 ### Performance
 
