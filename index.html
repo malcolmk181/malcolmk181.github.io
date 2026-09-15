@@ -6,94 +6,11 @@
   <title>Malcolm Keyes</title>
   <meta name="description" content="Personal site of Malcolm Keyes.">
   <script src="/assets/a11y-widget.js"></script>
+  <link rel="stylesheet" href="/assets/theme.css">
   <style>
-    :root {
-      color-scheme: light dark;
-      --bg: #ffffff;
-      --fg: #1a1a1a;
-      --muted: #555555;
-      --accent: #3355dd;
-      --nav-bg: #f5f5f7;
-      --nav-border: #dddddd;
-    }
-
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --bg: #121212;
-        --fg: #f0f0f0;
-        --muted: #b3b3b3;
-        --accent: #8aa8ff;
-        --nav-bg: #1a1a1a;
-        --nav-border: #3a3a3a;
-      }
-    }
-
-    :root[data-theme="light"] {
-      --bg: #ffffff;
-      --fg: #1a1a1a;
-      --muted: #555555;
-      --accent: #3355dd;
-      --nav-bg: #f5f5f7;
-      --nav-border: #dddddd;
-    }
-
-    :root[data-theme="dark"] {
-      --bg: #121212;
-      --fg: #f0f0f0;
-      --muted: #b3b3b3;
-      --accent: #8aa8ff;
-      --nav-bg: #1a1a1a;
-      --nav-border: #3a3a3a;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      background: var(--bg);
-      color: var(--fg);
-      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
-      line-height: 1.5;
-    }
-
-    .skip-link {
-      position: absolute;
-      left: -9999px;
-      top: 0;
-      background: var(--accent);
-      color: #fff;
-      padding: 0.5rem 1rem;
-      z-index: 10;
-    }
-
-    .skip-link:focus {
-      left: 0.5rem;
-      top: 0.5rem;
-    }
-
-    main {
-      max-width: 40rem;
-      margin: 0 auto;
-      padding: 2rem clamp(1rem, 5vw, 3rem) 4rem;
-    }
-
-    h1 {
-      margin-top: 0;
-    }
-
-    p {
-      color: var(--muted);
-    }
-
-    a {
-      color: var(--accent);
-    }
-
     nav[aria-label="Primary"] {
-      background: var(--nav-bg);
-      border-bottom: 1px solid var(--nav-border);
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
     }
 
     nav[aria-label="Primary"] ul {

@@ -6,69 +6,8 @@
   <title>Tools · Malcolm Keyes</title>
   <meta name="description" content="Small browser-based tools by Malcolm Keyes.">
   <script src="/assets/a11y-widget.js"></script>
+  <link rel="stylesheet" href="/assets/theme.css">
   <style>
-    :root {
-      color-scheme: light dark;
-      --bg: #ffffff;
-      --fg: #1a1a1a;
-      --muted: #555555;
-      --accent: #3355dd;
-      --card-border: #dddddd;
-    }
-
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --bg: #121212;
-        --fg: #f0f0f0;
-        --muted: #b3b3b3;
-        --accent: #8aa8ff;
-        --card-border: #3a3a3a;
-      }
-    }
-
-    :root[data-theme="light"] {
-      --bg: #ffffff;
-      --fg: #1a1a1a;
-      --muted: #555555;
-      --accent: #3355dd;
-      --card-border: #dddddd;
-    }
-
-    :root[data-theme="dark"] {
-      --bg: #121212;
-      --fg: #f0f0f0;
-      --muted: #b3b3b3;
-      --accent: #8aa8ff;
-      --card-border: #3a3a3a;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      background: var(--bg);
-      color: var(--fg);
-      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
-      line-height: 1.5;
-    }
-
-    .skip-link {
-      position: absolute;
-      left: -9999px;
-      top: 0;
-      background: var(--accent);
-      color: #fff;
-      padding: 0.5rem 1rem;
-      z-index: 10;
-    }
-
-    .skip-link:focus {
-      left: 0.5rem;
-      top: 0.5rem;
-    }
-
     nav[aria-label="Breadcrumb"] {
       padding: 1rem clamp(1rem, 5vw, 3rem) 0;
       max-width: 40rem;
@@ -76,21 +15,7 @@
     }
 
     main {
-      max-width: 40rem;
-      margin: 0 auto;
-      padding: 1.5rem clamp(1rem, 5vw, 3rem) 4rem;
-    }
-
-    h1 {
-      margin-top: 0;
-    }
-
-    p {
-      color: var(--muted);
-    }
-
-    a {
-      color: var(--accent);
+      padding-top: 1.5rem;
     }
 
     .tools-toolbar {
@@ -117,7 +42,7 @@
       font: inherit;
       color: var(--fg);
       background: var(--bg);
-      border: 1px solid var(--card-border);
+      border: 1px solid var(--border);
       border-radius: 0.375rem;
       padding: 0.5rem 0.6rem;
     }
@@ -132,7 +57,7 @@
     }
 
     .tool-item {
-      border: 1px solid var(--card-border);
+      border: 1px solid var(--border);
       border-radius: 0.5rem;
       padding: 1rem;
     }
@@ -150,14 +75,14 @@
       display: inline-block;
       font-size: 0.8rem;
       color: var(--muted);
-      border: 1px solid var(--card-border);
+      border: 1px solid var(--border);
       border-radius: 999px;
       padding: 0.1rem 0.6rem;
     }
 
     #tool-empty-state,
     #tool-no-results {
-      border: 1px dashed var(--card-border);
+      border: 1px dashed var(--border);
       border-radius: 0.5rem;
       padding: 1rem;
     }

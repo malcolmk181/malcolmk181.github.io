@@ -1,0 +1,70 @@
+/*
+ * Shared design tokens and base styles for every page.
+ *
+ * Theme: each color is defined once via light-dark(), and color-scheme
+ * (inherited by every element, including the a11y widget's own UI) does the
+ * light/dark switching. assets/a11y-widget.js sets data-theme to override
+ * the system preference; no page needs its own @media/data-theme blocks.
+ */
+:root {
+  color-scheme: light dark;
+  --bg: light-dark(#ffffff, #121212);
+  --fg: light-dark(#1a1a1a, #f0f0f0);
+  --muted: light-dark(#555555, #b3b3b3);
+  --accent: light-dark(#3355dd, #8aa8ff);
+  --surface: light-dark(#f5f5f7, #1a1a1a);
+  --border: light-dark(#dddddd, #3a3a3a);
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  line-height: 1.5;
+}
+
+a {
+  color: var(--accent);
+}
+
+h1 {
+  margin-top: 0;
+}
+
+p {
+  color: var(--muted);
+}
+
+main {
+  max-width: 40rem;
+  margin: 0 auto;
+  padding: 2rem clamp(1rem, 5vw, 3rem) 4rem;
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  background: var(--accent);
+  color: #fff;
+  padding: 0.5rem 1rem;
+  z-index: 10;
+}
+
+.skip-link:focus {
+  left: 0.5rem;
+  top: 0.5rem;
+}

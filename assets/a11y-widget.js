@@ -51,21 +51,23 @@
   applyFontScale(storedScale);
 
   function buildWidget() {
+    // color-scheme (inherited) plus light-dark() resolves the widget's own
+    // colors for system preference and the data-theme override alike, with
+    // each color written once instead of duplicated per @media/override block.
     var style = document.createElement("style");
     style.textContent =
+      ":root{color-scheme:light dark}" +
+      ':root[data-theme="light"]{color-scheme:light}' +
+      ':root[data-theme="dark"]{color-scheme:dark}' +
       ".a11y-widget-btn{position:fixed;top:.75rem;right:.75rem;z-index:1000;" +
-      "font:1rem/1.2 system-ui,-apple-system,\"Segoe UI\",sans-serif;background:#fff;color:#1a1a1a;" +
-      "border:1px solid #767676;border-radius:999px;padding:.4rem .9rem;cursor:pointer}" +
-      "@media (prefers-color-scheme:dark){.a11y-widget-btn{background:#1e1e1e;color:#f0f0f0;border-color:#999}}" +
-      ':root[data-theme="light"] .a11y-widget-btn{background:#fff;color:#1a1a1a;border-color:#767676}' +
-      ':root[data-theme="dark"] .a11y-widget-btn{background:#1e1e1e;color:#f0f0f0;border-color:#999}' +
+      "font:1rem/1.2 system-ui,-apple-system,\"Segoe UI\",sans-serif;" +
+      "background:light-dark(#fff,#1e1e1e);color:light-dark(#1a1a1a,#f0f0f0);" +
+      "border:1px solid light-dark(#767676,#999);border-radius:999px;padding:.4rem .9rem;cursor:pointer}" +
       ".a11y-widget-btn:hover,.a11y-widget-btn:focus-visible{border-color:#3355dd}" +
-      ".a11y-widget-dialog{font:1rem/1.5 system-ui,-apple-system,\"Segoe UI\",sans-serif;color:#1a1a1a;" +
-      "background:#fff;border:1px solid #767676;border-radius:.5rem;padding:1.25rem;max-width:20rem}" +
+      ".a11y-widget-dialog{font:1rem/1.5 system-ui,-apple-system,\"Segoe UI\",sans-serif;" +
+      "color:light-dark(#1a1a1a,#f0f0f0);background:light-dark(#fff,#1e1e1e);" +
+      "border:1px solid light-dark(#767676,#999);border-radius:.5rem;padding:1.25rem;max-width:20rem}" +
       ".a11y-widget-dialog::backdrop{background:rgba(0,0,0,.4)}" +
-      "@media (prefers-color-scheme:dark){.a11y-widget-dialog{background:#1e1e1e;color:#f0f0f0;border-color:#999}}" +
-      ':root[data-theme="light"] .a11y-widget-dialog{background:#fff;color:#1a1a1a;border-color:#767676}' +
-      ':root[data-theme="dark"] .a11y-widget-dialog{background:#1e1e1e;color:#f0f0f0;border-color:#999}' +
       ".a11y-widget-form h2{margin-top:0;font-size:1.1rem}" +
       ".a11y-widget-form fieldset{border:1px solid currentColor;border-radius:.375rem;margin:0 0 1rem;padding:.5rem .75rem}" +
       ".a11y-widget-form label{display:block;padding:.15rem 0}" +

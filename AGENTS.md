@@ -50,6 +50,19 @@ Serve small, fast, accessible pages directly from GitHub Pages. Favor the web pl
 - Always support both light and dark mode. Default to the browser/OS preference via `prefers-color-scheme`, and always provide a visible control to override it.
 - Write pages to be e-reader friendly: size all text in `rem`/`em` (never fixed `px` for readable text), keep a comfortable line length (roughly 45-75 characters, e.g. a ~40rem content column), and use line-height around 1.5 or more.
 
+### Shared theme stylesheet
+
+Every page includes the shared stylesheet right after the accessibility widget script:
+
+```html
+<script src="/assets/a11y-widget.js"></script>
+<link rel="stylesheet" href="/assets/theme.css">
+```
+
+Like the accessibility widget, this is a sanctioned shared-file exception (genuine reuse, not a framework): it defines the color tokens (`--bg`, `--fg`, `--muted`, `--accent`, `--surface`, `--border`) and base rules (`body`, `a`, `h1`, `p`, `main`, `.skip-link`) once instead of per page. A page's own `<style>` block should only hold page-specific layout, using `var(--token)` for color and overriding shared rules (e.g. `main { padding-top: ... }`) only when it genuinely needs to differ.
+
+Each color is defined once with `light-dark(lightValue, darkValue)`, not duplicated across an `@media (prefers-color-scheme: dark)` block and `:root[data-theme="light"|"dark"]` overrides — `color-scheme: light dark` on `:root` (overridden to `light`/`dark` by the accessibility widget's `data-theme` attribute) is what `light-dark()` reads, and `color-scheme` is inherited, so this also covers the accessibility widget's own injected UI without it needing to duplicate colors either. Don't reintroduce the old triplicated pattern — add new tokens to `theme.css` the same `light-dark()` way.
+
 ### Accessibility settings widget
 
 Every page includes the shared accessibility widget (theme + text size) via a single blocking script tag near the top of `<head>`:
@@ -64,7 +77,7 @@ The widget applies theme and text size before first paint (avoiding a flash of t
 
 For a page to work correctly with it:
 
-- Define colors that respond to `:root[data-theme="light"]` and `:root[data-theme="dark"]`, with an `@media (prefers-color-scheme: dark)` fallback for when no override is set (see `index.html` for the pattern).
+- Include `/assets/theme.css` (see above) so colors respond to the `data-theme` attribute the widget sets.
 - Size text in `rem`/`em` so the text-size control actually resizes it.
 - Use the root-absolute path `/assets/a11y-widget.js` (not a relative path) since this repo is a user site served at `/`, not a project site under a subpath.
 
