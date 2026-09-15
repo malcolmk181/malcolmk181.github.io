@@ -68,6 +68,13 @@ For a page to work correctly with it:
 - Size text in `rem`/`em` so the text-size control actually resizes it.
 - Use the root-absolute path `/assets/a11y-widget.js` (not a relative path) since this repo is a user site served at `/`, not a project site under a subpath.
 
+### Site structure
+
+- `index.html` is the home page. It links to `/tools/` (the tools landing page) via a `<nav aria-label="Primary">`.
+- `/tools/index.html` is the tools landing page: a searchable, sortable list of every tool page. Each tool is one `<li class="tool-item">` with `data-name`, `data-category`, and `data-order` attributes (see the comment in that file for the exact markup and what `data-order` means). The list renders fully in plain HTML — the search box and sort `<select>` are a JS-only enhancement on top, so the list of tools/links is still there and usable with JavaScript disabled.
+- Individual tools live at `tools/<slug>.html`, each a self-contained single file per the default approach above. Add a matching `<li>` entry to `/tools/index.html` when adding a tool.
+- Every page other than the home page includes a `<nav aria-label="Breadcrumb">` near the top with a link back to `/` (see `/tools/index.html` for the pattern).
+
 ### Performance
 
 - Ship no JavaScript on pages that do not need it. Use `type="module"` and load feature code only where used.

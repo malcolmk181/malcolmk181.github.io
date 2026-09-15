@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tools · Malcolm Keyes</title>
+  <meta name="description" content="Small browser-based tools by Malcolm Keyes.">
+  <script src="/assets/a11y-widget.js"></script>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #ffffff;
+      --fg: #1a1a1a;
+      --muted: #555555;
+      --accent: #3355dd;
+      --card-border: #dddddd;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #121212;
+        --fg: #f0f0f0;
+        --muted: #b3b3b3;
+        --accent: #8aa8ff;
+        --card-border: #3a3a3a;
+      }
+    }
+
+    :root[data-theme="light"] {
+      --bg: #ffffff;
+      --fg: #1a1a1a;
+      --muted: #555555;
+      --accent: #3355dd;
+      --card-border: #dddddd;
+    }
+
+    :root[data-theme="dark"] {
+      --bg: #121212;
+      --fg: #f0f0f0;
+      --muted: #b3b3b3;
+      --accent: #8aa8ff;
+      --card-border: #3a3a3a;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+
+    .skip-link {
+      position: absolute;
+      left: -9999px;
+      top: 0;
+      background: var(--accent);
+      color: #fff;
+      padding: 0.5rem 1rem;
+      z-index: 10;
+    }
+
+    .skip-link:focus {
+      left: 0.5rem;
+      top: 0.5rem;
+    }
+
+    nav[aria-label="Breadcrumb"] {
+      padding: 1rem clamp(1rem, 5vw, 3rem) 0;
+      max-width: 40rem;
+      margin: 0 auto;
+    }
+
+    main {
+      max-width: 40rem;
+      margin: 0 auto;
+      padding: 1.5rem clamp(1rem, 5vw, 3rem) 4rem;
+    }
+
+    h1 {
+      margin-top: 0;
+    }
+
+    p {
+      color: var(--muted);
+    }
+
+    a {
+      color: var(--accent);
+    }
+
+    .tools-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .tools-toolbar > div {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      flex: 1 1 12rem;
+    }
+
+    .tools-toolbar label {
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    .tools-toolbar input,
+    .tools-toolbar select {
+      font: inherit;
+      color: var(--fg);
+      background: var(--bg);
+      border: 1px solid var(--card-border);
+      border-radius: 0.375rem;
+      padding: 0.5rem 0.6rem;
+    }
+
+    .tool-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .tool-item {
+      border: 1px solid var(--card-border);
+      border-radius: 0.5rem;
+      padding: 1rem;
+    }
+
+    .tool-item h2 {
+      margin: 0 0 0.25rem;
+      font-size: 1.1rem;
+    }
+
+    .tool-item p {
+      margin: 0.4rem 0 0;
+    }
+
+    .tool-category {
+      display: inline-block;
+      font-size: 0.8rem;
+      color: var(--muted);
+      border: 1px solid var(--card-border);
+      border-radius: 999px;
+      padding: 0.1rem 0.6rem;
+    }
+
+    #tool-empty-state,
+    #tool-no-results {
+      border: 1px dashed var(--card-border);
+      border-radius: 0.5rem;
+      padding: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <nav aria-label="Breadcrumb">
+    <a href="/">&larr; Home</a>
+  </nav>
+
+  <main id="main">
+    <h1>Tools</h1>
+    <p>Small browser-based tools. Everything runs locally in your browser.</p>
+
+    <div class="tools-toolbar" id="tools-toolbar">
+      <div>
+        <label for="tool-search">Search</label>
+        <input type="search" id="tool-search" placeholder="Search by name, category, or description">
+      </div>
+      <div>
+        <label for="tool-sort">Sort by</label>
+        <select id="tool-sort">
+          <option value="order">Order</option>
+          <option value="name">Name (A&ndash;Z)</option>
+          <option value="category">Category</option>
+        </select>
+      </div>
+    </div>
+
+    <p id="tool-empty-state" hidden>No tools yet &mdash; check back soon.</p>
+    <p id="tool-no-results" hidden>No tools match your search.</p>
+
+    <ul class="tool-list" id="tool-list">
+      <!--
+        Add a tool with a <li class="tool-item">:
+
+        <li class="tool-item" data-name="Tool name" data-category="Category" data-order="10">
+          <h2><a href="/tools/tool-slug.html">Tool name</a></h2>
+          <span class="tool-category">Category</span>
+          <p>One or two sentence description of what it does.</p>
+        </li>
+
+        - data-order: an integer controlling default display order. Leave gaps
+          (10, 20, 30, ...) so new tools can be inserted without renumbering.
+        - Keep data-name/data-category in sync with the visible text.
+      -->
+    </ul>
+  </main>
+
+  <script>
+    (function () {
+      "use strict";
+
+      var list = document.getElementById("tool-list");
+      var items = Array.prototype.slice.call(list.querySelectorAll(".tool-item"));
+      var toolbar = document.getElementById("tools-toolbar");
+      var emptyState = document.getElementById("tool-empty-state");
+      var noResults = document.getElementById("tool-no-results");
+      var searchInput = document.getElementById("tool-search");
+      var sortSelect = document.getElementById("tool-sort");
+
+      if (items.length === 0) {
+        toolbar.hidden = true;
+        emptyState.hidden = false;
+        return;
+      }
+
+      function sortItems(by) {
+        var sorted = items.slice().sort(function (a, b) {
+          if (by === "name") {
+            return a.dataset.name.localeCompare(b.dataset.name);
+          }
+          if (by === "category") {
+            var byCategory = a.dataset.category.localeCompare(b.dataset.category);
+            return byCategory !== 0 ? byCategory : a.dataset.name.localeCompare(b.dataset.name);
+          }
+          return Number(a.dataset.order) - Number(b.dataset.order);
+        });
+        sorted.forEach(function (item) {
+          list.appendChild(item);
+        });
+      }
+
+      function filterItems(query) {
+        var normalized = query.trim().toLowerCase();
+        var visibleCount = 0;
+        items.forEach(function (item) {
+          var haystack = item.textContent.toLowerCase();
+          var matches = normalized === "" || haystack.indexOf(normalized) !== -1;
+          item.hidden = !matches;
+          if (matches) visibleCount += 1;
+        });
+        noResults.hidden = visibleCount !== 0;
+      }
+
+      sortSelect.addEventListener("change", function () {
+        sortItems(sortSelect.value);
+      });
+
+      searchInput.addEventListener("input", function () {
+        filterItems(searchInput.value);
+      });
+
+      sortItems(sortSelect.value);
+    })();
+  </script>
+</body>
+</html>
