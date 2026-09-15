@@ -31,6 +31,34 @@
     nav[aria-label="Primary"] a:focus-visible {
       text-decoration: underline;
     }
+
+    h2 {
+      font-size: 1.1rem;
+    }
+
+    .contact-card {
+      display: inline-flex;
+      flex-direction: column;
+      gap: 0.15rem;
+      border: 1px solid var(--border);
+      border-radius: 0.5rem;
+      padding: 0.75rem 1rem;
+      text-decoration: none;
+    }
+
+    .contact-card:hover,
+    .contact-card:focus-visible {
+      border-color: var(--accent);
+    }
+
+    .contact-card strong {
+      color: var(--fg);
+    }
+
+    .contact-card span {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
   </style>
 </head>
 <body>
@@ -44,7 +72,19 @@
 
   <main id="main">
     <h1>Malcolm Keyes</h1>
-    <p>This site is under construction.</p>
+    <p>
+      This is Malcolm's dump grounds for random stuff, primarily inspired by
+      <a href="https://simonwillison.net/">Simon Willison's blog</a>. I use AI
+      where it makes sense.
+    </p>
+
+    <section aria-labelledby="contact-heading">
+      <h2 id="contact-heading">Contact</h2>
+      <a class="contact-card" href="https://www.linkedin.com/in/malcolm-keyes">
+        <strong>LinkedIn</strong>
+        <span>linkedin.com/in/malcolm-keyes</span>
+      </a>
+    </section>
   </main>
 </body>
 </html>
