@@ -3,8 +3,70 @@
 This is Malcolm Keyes' personal GitHub Pages site (`malcolmk181.github.io`), served
 directly from the `main` branch with no build step.
 
-The repo was reset to a clean slate on 2026-09-15. There's no site content yet.
-
 ## Commit messages
 
 Always use Conventional Commits format (e.g. `fix: ...`, `feat: ...`, `chore: ...`, `docs: ...`) for commit message subject lines.
+
+## Repository guidance
+
+### Goal
+
+Serve small, fast, accessible pages directly from GitHub Pages. Favor the web platform over abstractions.
+
+### Default approach
+
+- Use plain semantic HTML, modern CSS, and vanilla JavaScript.
+- Do not add a framework, package manager, build step, or third-party runtime dependency without explicit user approval and a concrete need.
+- Prefer one self-contained HTML file for a small standalone tool. Split out files only when genuine reuse, size, or maintainability makes that simpler.
+- Prefer native elements and browser APIs over reimplementing them. Use `<details>`, `<dialog>`, popovers, native forms, and ES modules when appropriate.
+- Target Baseline Widely Available features. Treat newer features as progressive enhancements with a usable fallback.
+- Keep pages functional when JavaScript fails; features that inherently require JavaScript must fail clearly and preserve navigation/content access.
+- Before building a new tool, search this repository for a proven pattern worth reusing.
+
+### Browser-native tool patterns
+
+- Treat paste, copy-to-clipboard, local file selection, and generated downloads as useful first-class input/output options.
+- Process user files locally in the browser when possible; do not upload data merely to transform it.
+- Put small, non-sensitive, shareable state in the URL. Use local storage only for larger non-sensitive convenience state, and provide a clear reset control.
+- Never embed, persist, or request reusable secrets or API keys in client-side code or browser storage.
+- Fetch only public CORS-enabled APIs from the browser, and handle offline, rate-limit, permission, and API errors clearly.
+- If an approved dependency is justified, use a browser-ready file from a trusted CDN, pin an exact version, and document why it is needed. Never use an unversioned or `latest` URL.
+
+### HTML and accessibility
+
+- Target WCAG 2.2 AA.
+- Set `lang`, charset, viewport, a unique title, and a useful meta description on every page.
+- Use landmarks, one `<main>`, logical headings, and a keyboard-visible skip link.
+- Use links for navigation and buttons for actions. Label every form control and give images appropriate `alt` text.
+- Preserve keyboard operation, visible focus, sufficient contrast, comfortable touch targets, zoom/reflow, and reduced-motion preferences.
+- Use ARIA only when native HTML cannot express the needed semantics or state.
+
+### CSS and responsive design
+
+- Start mobile-first; verify layouts at 320 CSS pixels and at wide desktop sizes.
+- Prefer Grid, Flexbox, container queries, logical properties, and fluid sizing over device detection or many fixed breakpoints.
+- Avoid fixed heights for content and avoid horizontal page scrolling.
+- Keep focus and controls visible when using sticky or overlay UI.
+- Always support both light and dark mode. Default to the browser/OS preference via `prefers-color-scheme`, and always provide a visible control to override it.
+
+### Performance
+
+- Ship no JavaScript on pages that do not need it. Use `type="module"` and load feature code only where used.
+- Avoid third-party scripts, large font families, icon fonts, and autoplaying media.
+- Prefer system fonts or a small self-hosted WOFF2 subset.
+- Use responsive images, modern formats where useful, intrinsic `width`/`height`, and lazy loading below the fold. Do not lazy-load the primary above-the-fold image.
+- Prevent layout shifts and keep the initial network payload deliberately small.
+
+### GitHub Pages constraints
+
+- The deployed site is static: never expose secrets or assume server-side code exists.
+- Use path-relative internal links and assets so project sites under `/<repository>/` work correctly.
+- Prefer real HTML files over client-side routing, and maintain a useful `404.html`.
+- Use HTTPS URLs for all external resources.
+
+### Before finishing
+
+- Check for broken links, missing assets, console errors, and invalid markup.
+- Test keyboard-only use, focus order, 200% zoom, narrow and wide layouts, reduced motion, and JavaScript-disabled behavior where applicable.
+- Run available accessibility and Lighthouse checks, but do not treat automated scores as proof of accessibility.
+- Keep changes focused; do not add tooling or refactor unrelated pages.
