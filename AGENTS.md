@@ -84,9 +84,32 @@ For a page to work correctly with it:
 ### Site structure
 
 - `index.html` is the home page. It links to `/tools/` (the tools landing page) via a `<nav aria-label="Primary">`.
-- `/tools/index.html` is the tools landing page: a searchable, sortable list of every tool page. Each tool is one `<li class="tool-item">` with `data-name`, `data-category`, and `data-order` attributes (see the comment in that file for the exact markup and what `data-order` means). The list renders fully in plain HTML — the search box and sort `<select>` are a JS-only enhancement on top, so the list of tools/links is still there and usable with JavaScript disabled.
-- Individual tools live at `tools/<slug>.html`, each a self-contained single file per the default approach above. Add a matching `<li>` entry to `/tools/index.html` when adding a tool.
+- `/tools/index.html` is the tools landing page: a searchable, sortable list of every tool page. The list itself renders fully in plain HTML — the search box and sort `<select>` are a JS-only enhancement on top, so the list of tools/links is still there and usable with JavaScript disabled.
+- Individual tools live at `tools/<slug>.html`, each a self-contained single file per the default approach above.
 - Every page other than the home page includes a `<nav aria-label="Breadcrumb">` near the top with a link back to `/` (see `/tools/index.html` for the pattern).
+
+### Tools list generation
+
+The `<li>` entries inside `/tools/index.html`'s `<!-- tools:generated:start -->` / `<!-- tools:generated:end -->` markers are generated, not hand-written — the source of truth is each tool page's own `<head>` metadata, not a second hand-maintained list. This exists so a tool's listing can't drift out of sync with the tool page itself, without needing a runtime directory-listing API call (which would require JavaScript to work at all, defeating the no-JS fallback above, and would hit GitHub's ~60 req/hour unauthenticated rate limit).
+
+Every file in `tools/*.html` other than `index.html` must declare, in its `<head>`:
+
+```html
+<title>Tool Name &middot; Malcolm Keyes</title>
+<meta name="description" content="One or two sentence description.">
+<meta name="tool:category" content="Category">
+<meta name="tool:order" content="10">
+```
+
+`tool:order` is an integer controlling default display order; leave gaps (10, 20, 30, ...) so new tools can be inserted without renumbering everything.
+
+After adding, removing, or editing the metadata of a tool page, regenerate the list:
+
+```sh
+uv run python scripts/build_tools_list.py
+```
+
+`.github/workflows/check-tools-list.yml` runs the same script with `--check` on every push/PR to `main` and fails if the committed list is stale. It only reads the checked-out repo (no network calls), so it stays fast and never touches GitHub's API rate limit. The script and workflow are dev-time tooling only — they don't change what's served; the published site is still plain static files with no build step.
 
 ### Performance
 
