@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Park Status Links &middot; Malcolm Keyes</title>
+  <meta name="description" content="Quick links to lift, trail, and bike park status pages for a few mountains.">
+  <script src="/assets/a11y-widget.js"></script>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #ffffff;
+      --fg: #1a1a1a;
+      --muted: #555555;
+      --accent: #3355dd;
+      --card-border: #dddddd;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #121212;
+        --fg: #f0f0f0;
+        --muted: #b3b3b3;
+        --accent: #8aa8ff;
+        --card-border: #3a3a3a;
+      }
+    }
+
+    :root[data-theme="light"] {
+      --bg: #ffffff;
+      --fg: #1a1a1a;
+      --muted: #555555;
+      --accent: #3355dd;
+      --card-border: #dddddd;
+    }
+
+    :root[data-theme="dark"] {
+      --bg: #121212;
+      --fg: #f0f0f0;
+      --muted: #b3b3b3;
+      --accent: #8aa8ff;
+      --card-border: #3a3a3a;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+
+    .skip-link {
+      position: absolute;
+      left: -9999px;
+      top: 0;
+      background: var(--accent);
+      color: #fff;
+      padding: 0.5rem 1rem;
+      z-index: 10;
+    }
+
+    .skip-link:focus {
+      left: 0.5rem;
+      top: 0.5rem;
+    }
+
+    nav[aria-label="Breadcrumb"] {
+      padding: 1rem clamp(1rem, 5vw, 3rem) 0;
+      max-width: 40rem;
+      margin: 0 auto;
+    }
+
+    nav[aria-label="Breadcrumb"] ol {
+      display: flex;
+      gap: 0.4rem;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      color: var(--muted);
+    }
+
+    main {
+      max-width: 40rem;
+      margin: 0 auto;
+      padding: 1.5rem clamp(1rem, 5vw, 3rem) 4rem;
+    }
+
+    h1 {
+      margin-top: 0;
+    }
+
+    p {
+      color: var(--muted);
+    }
+
+    a {
+      color: var(--accent);
+    }
+
+    .park-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .park-item {
+      border: 1px solid var(--card-border);
+      border-radius: 0.5rem;
+      padding: 1rem;
+    }
+
+    .park-item h2 {
+      margin: 0 0 0.5rem;
+      font-size: 1.1rem;
+      color: var(--fg);
+    }
+
+    .park-links {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .park-note {
+      margin: 0.6rem 0 0;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <nav aria-label="Breadcrumb">
+    <ol>
+      <li><a href="/">Home</a></li>
+      <li>/</li>
+      <li><a href="/tools/">Tools</a></li>
+    </ol>
+  </nav>
+
+  <main id="main">
+    <h1>Park Status Links</h1>
+    <p>
+      Direct links to lift, trail, and bike park status pages. These are just
+      links to each resort's own page &mdash; nothing here is scraped or
+      auto-updated.
+    </p>
+
+    <ul class="park-list">
+      <li class="park-item">
+        <h2>Snowshoe Mountain</h2>
+        <ul class="park-links">
+          <li><a href="https://www.snowshoemtn.com/mountain-info/mountain-report#lift-and-trail-status">Lift &amp; Trail Status</a></li>
+        </ul>
+      </li>
+
+      <li class="park-item">
+        <h2>Mountain Creek</h2>
+        <ul class="park-links">
+          <li><a href="https://mountaincreek.com/bike-park/trail-report-hours/">Bike Park &mdash; Trail Report &amp; Hours</a></li>
+          <li><a href="https://mountaincreek.com/skiing-riding/mountain-report/snow-overview/">Ski/Snow &mdash; Mountain Report</a></li>
+        </ul>
+      </li>
+
+      <li class="park-item">
+        <h2>Blue Mountain</h2>
+        <ul class="park-links">
+          <li><a href="https://www.skibluemt.com/mountain-biking/trail-map/">Bike Park &mdash; Trail Map &amp; Park Report</a></li>
+        </ul>
+      </li>
+
+      <li class="park-item">
+        <h2>Massanutten</h2>
+        <ul class="park-links">
+          <li><a href="https://www.massresort.com/play/conditions/">Conditions (Snow/Ski)</a></li>
+        </ul>
+        <p class="park-note">No dedicated bike park status page found &mdash; this links to their general snow/ski conditions page.</p>
+      </li>
+    </ul>
+  </main>
+</body>
+</html>
