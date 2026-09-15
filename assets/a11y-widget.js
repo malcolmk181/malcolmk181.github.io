@@ -117,6 +117,18 @@
       dialog.showModal();
     });
 
+    dialog.addEventListener("click", function (event) {
+      var rect = dialog.getBoundingClientRect();
+      var clickedInside =
+        event.clientX >= rect.left &&
+        event.clientX <= rect.right &&
+        event.clientY >= rect.top &&
+        event.clientY <= rect.bottom;
+      if (!clickedInside) {
+        dialog.close();
+      }
+    });
+
     dialog.addEventListener("change", function (event) {
       var target = event.target;
       if (target.name === "a11y-theme") {
