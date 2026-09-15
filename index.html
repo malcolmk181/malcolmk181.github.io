@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Malcolm Keyes</title>
+  <meta name="description" content="Personal site of Malcolm Keyes.">
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #ffffff;
+      --fg: #1a1a1a;
+      --muted: #555555;
+      --accent: #3355dd;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #121212;
+        --fg: #f0f0f0;
+        --muted: #b3b3b3;
+        --accent: #8aa8ff;
+      }
+    }
+
+    :root[data-theme="light"] {
+      --bg: #ffffff;
+      --fg: #1a1a1a;
+      --muted: #555555;
+      --accent: #3355dd;
+    }
+
+    :root[data-theme="dark"] {
+      --bg: #121212;
+      --fg: #f0f0f0;
+      --muted: #b3b3b3;
+      --accent: #8aa8ff;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+
+    .skip-link {
+      position: absolute;
+      left: -9999px;
+      top: 0;
+      background: var(--accent);
+      color: #fff;
+      padding: 0.5rem 1rem;
+      z-index: 10;
+    }
+
+    .skip-link:focus {
+      left: 0.5rem;
+      top: 0.5rem;
+    }
+
+    header {
+      display: flex;
+      justify-content: flex-end;
+      padding: 1rem clamp(1rem, 5vw, 3rem);
+    }
+
+    #theme-toggle {
+      font: inherit;
+      background: none;
+      border: 1px solid var(--muted);
+      color: var(--fg);
+      border-radius: 999px;
+      padding: 0.4rem 0.9rem;
+      cursor: pointer;
+    }
+
+    #theme-toggle:hover,
+    #theme-toggle:focus-visible {
+      border-color: var(--accent);
+    }
+
+    main {
+      max-width: 40rem;
+      margin: 0 auto;
+      padding: 2rem clamp(1rem, 5vw, 3rem) 4rem;
+    }
+
+    h1 {
+      margin-top: 0;
+    }
+
+    p {
+      color: var(--muted);
+    }
+
+    a {
+      color: var(--accent);
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      #theme-toggle {
+        transition: border-color 0.15s ease;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header>
+    <button id="theme-toggle" type="button" aria-pressed="false">
+      <span id="theme-toggle-label">Toggle theme</span>
+    </button>
+  </header>
+
+  <main id="main">
+    <h1>Malcolm Keyes</h1>
+    <p>This site is under construction.</p>
+  </main>
+
+  <script type="module">
+    const STORAGE_KEY = "theme";
+    const root = document.documentElement;
+    const button = document.getElementById("theme-toggle");
+    const label = document.getElementById("theme-toggle-label");
+
+    function systemPrefersDark() {
+      return window.matchMedia("(prefers-color-scheme: dark)").matches;
+    }
+
+    function currentTheme() {
+      return root.getAttribute("data-theme") || (systemPrefersDark() ? "dark" : "light");
+    }
+
+    function updateLabel() {
+      const theme = currentTheme();
+      label.textContent = theme === "dark" ? "Switch to light theme" : "Switch to dark theme";
+      button.setAttribute("aria-pressed", String(root.hasAttribute("data-theme")));
+    }
+
+    function applyStoredTheme() {
+      try {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        if (stored === "light" || stored === "dark") {
+          root.setAttribute("data-theme", stored);
+        }
+      } catch {
+        // Ignore storage errors (e.g. private browsing); fall back to system preference.
+      }
+      updateLabel();
+    }
+
+    button.addEventListener("click", () => {
+      const next = currentTheme() === "dark" ? "light" : "dark";
+      root.setAttribute("data-theme", next);
+      try {
+        localStorage.setItem(STORAGE_KEY, next);
+      } catch {
+        // Ignore storage errors; theme still applies for this page view.
+      }
+      updateLabel();
+    });
+
+    applyStoredTheme();
+  </script>
+</body>
+</html>
