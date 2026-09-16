@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Temperature Converter &middot; Malcolm Keyes</title>
+  <meta name="description" content="Convert Fahrenheit to Celsius and back with two editable fields and an aligned visual temperature scale.">
+  <meta name="tool:category" content="Conversions">
+  <meta name="tool:order" content="30">
+  <script src="../assets/a11y-widget.js"></script>
+  <link rel="stylesheet" href="../assets/theme.css">
+  <style>
+    nav[aria-label="Breadcrumb"] { max-width: 40rem; margin: auto; padding: 1rem clamp(1rem, 5vw, 3rem) 0; }
+    main { padding-top: 1.5rem; }
+    fieldset { border: 0; padding: 0; margin: 0; }
+    legend { margin-bottom: 0.75rem; }
+    .fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr)); gap: 1rem; }
+    label { display: grid; gap: 0.4rem; }
+    input { width: 100%; min-width: 0; padding: 0.6rem; font: inherit; font-size: 1.5rem; color: var(--fg); background: var(--surface); border: 1px solid var(--muted); border-radius: 0.4rem; }
+    input:focus-visible, button:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+    .presets { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
+    button { font: inherit; padding: 0.6rem 0.8rem; min-height: 2.75rem; color: var(--fg); background: var(--surface); border: 1px solid var(--border); border-radius: 0.4rem; cursor: pointer; }
+    #status { min-height: 3rem; overflow-wrap: anywhere; }
+    figure { max-width: 24rem; margin: 1.5rem auto; border: 1px solid var(--border); border-radius: 0.6rem; padding: 1rem; }
+    figcaption { font-weight: 600; }
+    .scale-head { display: flex; justify-content: space-between; margin: 1rem 0 1.5rem; }
+    .scale { position: relative; height: 16rem; margin-bottom: 1.5rem; }
+    .tick { position: absolute; width: 100%; top: var(--position); transform: translateY(-50%); display: flex; align-items: center; gap: 0.5rem; font-variant-numeric: tabular-nums; }
+    .tick span { min-width: 4.5em; overflow-wrap: anywhere; }
+    .tick span:last-child { text-align: right; }
+    .tick::after { content: ''; height: 1px; background: var(--border); flex: 1; order: 1; }
+    .tick span:last-child { order: 2; }
+    #marker { position: absolute; inset-inline: 5em; top: var(--position); transform: translateY(-50%); border-top: 3px solid var(--accent); pointer-events: none; }
+    #marker::before { content: ''; position: absolute; width: 0.7rem; height: 0.7rem; border-radius: 50%; background: var(--accent); left: 50%; top: -0.45rem; }
+    .note { font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <nav aria-label="Breadcrumb"><a href="../index.html">Home</a> / <a href="index.html">Tools</a></nav>
+  <main id="main">
+    <h1>Temperature Converter</h1>
+    <p>Edit either temperature. The other updates as you type.</p>
+    <noscript><p>Enable JavaScript for live conversion. The reference scale and formulas below work without it.</p></noscript>
+    <fieldset id="controls" disabled>
+      <legend>Convert a temperature</legend>
+      <div class="fields">
+        <label for="fahrenheit">Fahrenheit (°F)<input id="fahrenheit" type="number" step="any" value="70" aria-describedby="precision"></label>
+        <label for="celsius">Celsius (°C)<input id="celsius" type="number" step="any" value="21.1111" aria-describedby="precision"></label>
+      </div>
+      <div class="presets" aria-label="Reference temperatures">
+        <button type="button" data-c="0">Freezing water</button>
+        <button type="button" data-f="70">Room temp · 70°F</button>
+        <button type="button" data-c="100">Boiling water</button>
+      </div>
+    </fieldset>
+    <p id="precision" class="note">Converted values are rounded to 4 decimal places. Water reference points assume standard atmospheric pressure.</p>
+    <p id="status" role="status">70 °F = 21.1111 °C</p>
+    <figure>
+      <figcaption>Same height, same temperature</figcaption>
+      <p class="note">Read straight across to match the units. The highlighted line marks your temperature; the range expands for values outside the scale.</p>
+      <div class="scale-head"><span>Fahrenheit °F</span><span>Celsius °C</span></div>
+      <div class="scale" id="scale">
+        <div id="ticks">
+          <div class="tick" style="--position:0%"><span>212</span><span>100</span></div>
+          <div class="tick" style="--position:14.2857%"><span>176</span><span>80</span></div>
+          <div class="tick" style="--position:28.5714%"><span>140</span><span>60</span></div>
+          <div class="tick" style="--position:42.8571%"><span>104</span><span>40</span></div>
+          <div class="tick" style="--position:57.1429%"><span>68</span><span>20</span></div>
+          <div class="tick" style="--position:71.4286%"><span>32</span><span>0</span></div>
+          <div class="tick" style="--position:85.7143%"><span>−4</span><span>−20</span></div>
+          <div class="tick" style="--position:100%"><span>−40</span><span>−40</span></div>
+        </div>
+        <div id="marker" style="--position:56.3492%" aria-hidden="true"></div>
+      </div>
+    </figure>
+    <details>
+      <summary>Conversion formulas</summary>
+      <p>°C = (°F − 32) × 5 ÷ 9<br>°F = °C × 9 ÷ 5 + 32</p>
+      <p>At −40°, Fahrenheit and Celsius are equal.</p>
+    </details>
+  </main>
+  <script type="module">
+    const fahrenheit = document.getElementById('fahrenheit');
+    const celsius = document.getElementById('celsius');
+    const status = document.getElementById('status');
+    const marker = document.getElementById('marker');
+    const ticks = document.getElementById('ticks');
+    const format = value => String(Number(value.toFixed(4)));
+    const toF = value => value * 1.8 + 32;
+
+    function draw(value) {
+      const low = Math.min(-40, Math.floor(value / 20) * 20);
+      const high = Math.max(100, Math.ceil(value / 20) * 20);
+      ticks.replaceChildren();
+      for (let i = 0; i <= 7; i++) {
+        const c = high - (high - low) * i / 7;
+        const row = document.createElement('div');
+        row.className = 'tick';
+        row.style.setProperty('--position', `${i / 7 * 100}%`);
+        for (const temperature of [toF(c), c]) {
+          const label = document.createElement('span');
+          label.textContent = Number(temperature.toPrecision(4)).toString();
+          row.append(label);
+        }
+        ticks.append(row);
+      }
+      marker.style.setProperty('--position', `${(high - value) / (high - low) * 100}%`);
+      marker.hidden = false;
+    }
+
+    function update(source) {
+      const target = source === celsius ? fahrenheit : celsius;
+      const value = source.valueAsNumber;
+      if (!Number.isFinite(value)) {
+        target.value = '';
+        marker.hidden = true;
+        status.textContent = source.validity.badInput ? 'Enter a valid number.' : 'Enter a temperature in either box.';
+        return;
+      }
+      const c = source === celsius ? value : (value - 32) / 1.8;
+      const f = source === fahrenheit ? value : toF(value);
+      // Keep arithmetic and the graph finite even for extreme numeric input.
+      if (!Number.isFinite(f) || !Number.isFinite(c) || Math.abs(c) > 1e12) {
+        target.value = '';
+        marker.hidden = true;
+        status.textContent = 'This temperature is too large to display. Try a smaller value.';
+        return;
+      }
+      target.value = format(source === celsius ? f : c);
+      status.textContent = `${format(f)} °F = ${format(c)} °C`;
+      draw(c);
+    }
+
+    for (const input of [fahrenheit, celsius]) input.addEventListener('input', () => update(input));
+    for (const button of document.querySelectorAll('[data-c], [data-f]')) {
+      button.addEventListener('click', () => {
+        const input = button.dataset.f !== undefined ? fahrenheit : celsius;
+        input.value = button.dataset.f ?? button.dataset.c;
+        update(input);
+      });
+    }
+    document.getElementById('controls').disabled = false;
+    update(fahrenheit);
+  </script>
+</body>
+</html>
