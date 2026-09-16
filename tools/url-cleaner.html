@@ -121,15 +121,47 @@
         "igshid", "mc_cid", "mc_eid", "mkt_tok", "_ga", "_gl", "oly_anon_id",
         "oly_enc_id", "vero_conv", "vero_id", "hsenc", "__hssc", "__hstc", "__hsfp",
         "sc_campaign", "sc_channel", "sc_content", "sc_medium", "sc_outcome", "sc_geo",
-        "wickedid", "yclid", "zanpid", "s_cid", "ef_id", "referrer"
+        "wickedid", "yclid", "zanpid", "s_cid", "ef_id", "referrer",
+        // Google Merchant Center auto-tagging:
+        // https://support.google.com/merchants/answer/15191080
+        "srsltid",
+        // TikTok and Snapchat ad click IDs:
+        // https://ads.tiktok.com/resources/help/article/tiktok-click-id
+        // https://www.developers.snap.com/marketing-api/Conversions-API/Parameters
+        "ttclid", "sccid",
+        // LinkedIn first-party ad tracking:
+        // https://learn.microsoft.com/en-us/linkedin/marketing/conversions/conversions-usecase
+        "li_fat_id",
+        // Klaviyo email-to-website tracking:
+        // https://help.klaviyo.com/hc/en-us/articles/115005076767
+        "_kx",
+        // HubSpot email tracking (including the leading underscores):
+        // https://knowledge.hubspot.com/da/reports/why-do-i-see-so-many-urls-for-the-same-page-in-google-analytics-for-visits-from-hubspot-emails
+        "_hsenc", "_hsmi",
+        // Adobe Advertising AMO ID:
+        // https://experienceleague.adobe.com/en/docs/advertising/integrations/analytics/ids
+        "s_kwcid",
+        // Matomo/Piwik campaign names and keywords. Exact keys avoid stripping
+        // unrelated pk_* values or A/B variation selectors such as pk_abv.
+        // https://matomo.org/faq/how-to/faq_120/
+        // https://developer.matomo.org/guides/ab-tests/campaign
+        "matomo_campaign", "matomo_kwd", "pk_campaign", "pk_kwd",
+        "pk_keyword", "piwik_campaign", "piwik_kwd"
       ]);
       var trackingPrefixes = ["utm_", "mtm_", "ga_", "hsa_", "vero_"];
       var source = document.getElementById("source-urls");
       var result = document.getElementById("cleaned-urls");
       var status = document.getElementById("result-status");
 
-      function isTrackingParameter(name) {
+      function isTrackingParameter(name, hostname) {
         var normalized = name.toLowerCase();
+        // Share-link tags scoped to their platforms. Preserve functional keys
+        // such as Instagram's img_index and Facebook's story_fbid/id.
+        // https://github.com/ClearURLs/Rules/blob/master/data.min.json
+        if (normalized === "igsh" &&
+            (hostname === "instagram.com" || hostname.endsWith(".instagram.com"))) return true;
+        if (normalized === "mibextid" &&
+            (hostname === "facebook.com" || hostname.endsWith(".facebook.com"))) return true;
         return trackingNames.has(normalized) || trackingPrefixes.some(function (prefix) {
           return normalized.indexOf(prefix) === 0;
         });
@@ -139,7 +171,7 @@
         var url = new URL(value);
         var removed = 0;
         Array.from(url.searchParams.keys()).forEach(function (name) {
-          if (isTrackingParameter(name)) {
+          if (isTrackingParameter(name, url.hostname)) {
             url.searchParams.delete(name);
             removed += 1;
           }
