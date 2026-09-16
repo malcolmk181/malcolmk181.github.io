@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>URL Cleaner &middot; Malcolm Keyes</title>
+  <meta name="description" content="Remove common tracking parameters from one or more URLs while preserving functional query parameters such as product variants.">
+  <meta name="tool:category" content="Privacy">
+  <meta name="tool:order" content="20">
+  <script src="../assets/a11y-widget.js"></script>
+  <link rel="stylesheet" href="../assets/theme.css">
+  <style>
+    nav[aria-label="Breadcrumb"] {
+      max-width: 40rem;
+      margin: 0 auto;
+      padding: 1rem clamp(1rem, 5vw, 3rem) 0;
+    }
+
+    main {
+      padding-top: 1.5rem;
+    }
+
+    form,
+    .result {
+      display: grid;
+      gap: 0.75rem;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 10rem;
+      resize: vertical;
+      padding: 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: 0.5rem;
+      background: var(--bg);
+      color: var(--fg);
+      font: inherit;
+      line-height: 1.4;
+    }
+
+    textarea:focus-visible,
+    button:focus-visible {
+      outline: 3px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    button {
+      min-height: 2.75rem;
+      padding: 0.5rem 0.9rem;
+      border: 1px solid var(--border);
+      border-radius: 0.375rem;
+      background: var(--surface);
+      color: var(--fg);
+      font: inherit;
+      cursor: pointer;
+    }
+
+    button[type="submit"] {
+      border-color: var(--accent);
+      background: var(--accent);
+      color: white;
+    }
+
+    .status {
+      min-height: 1.5rem;
+      margin: 0;
+    }
+
+    .help {
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <nav aria-label="Breadcrumb">
+    <a href="../index.html">Home</a> / <a href="index.html">Tools</a>
+  </nav>
+
+  <main id="main">
+    <h1>URL Cleaner</h1>
+    <p>Remove common advertising and analytics tags without discarding the query parameters that make a link work.</p>
+    <noscript><p>This tool needs JavaScript to clean URLs locally in your browser.</p></noscript>
+
+    <form id="cleaner-form">
+      <label for="source-urls">URLs to clean</label>
+      <textarea id="source-urls" name="source-urls" spellcheck="false" autocapitalize="off" placeholder="Paste one URL per line" aria-describedby="cleaner-help"></textarea>
+      <p class="help" id="cleaner-help">This removes well-known tracking tags, such as <code>utm_source</code>, <code>fbclid</code>, and <code>gclid</code>. Unknown parameters stay, so product variants, searches, and shared state are preserved. Nothing leaves your browser.</p>
+      <div class="actions">
+        <button type="submit">Clean URLs</button>
+        <button type="button" id="paste-button">Paste from clipboard</button>
+        <button type="button" id="clear-button">Clear</button>
+      </div>
+    </form>
+
+    <section class="result" aria-labelledby="result-heading">
+      <h2 id="result-heading">Cleaned URLs</h2>
+      <label for="cleaned-urls">Result</label>
+      <textarea id="cleaned-urls" readonly spellcheck="false" aria-describedby="result-status"></textarea>
+      <div class="actions">
+        <button type="button" id="copy-button">Copy cleaned URLs</button>
+      </div>
+      <p class="status" id="result-status" role="status" aria-live="polite"></p>
+    </section>
+  </main>
+
+  <script>
+    (function () {
+      "use strict";
+
+      var trackingNames = new Set([
+        "fbclid", "gclid", "dclid", "gbraid", "wbraid", "msclkid", "twclid",
+        "igshid", "mc_cid", "mc_eid", "mkt_tok", "_ga", "_gl", "oly_anon_id",
+        "oly_enc_id", "vero_conv", "vero_id", "hsenc", "__hssc", "__hstc", "__hsfp",
+        "sc_campaign", "sc_channel", "sc_content", "sc_medium", "sc_outcome", "sc_geo",
+        "wickedid", "yclid", "zanpid", "s_cid", "ef_id", "referrer"
+      ]);
+      var trackingPrefixes = ["utm_", "mtm_", "ga_", "hsa_", "vero_"];
+      var source = document.getElementById("source-urls");
+      var result = document.getElementById("cleaned-urls");
+      var status = document.getElementById("result-status");
+
+      function isTrackingParameter(name) {
+        var normalized = name.toLowerCase();
+        return trackingNames.has(normalized) || trackingPrefixes.some(function (prefix) {
+          return normalized.indexOf(prefix) === 0;
+        });
+      }
+
+      function cleanUrl(value) {
+        var url = new URL(value);
+        var removed = 0;
+        Array.from(url.searchParams.keys()).forEach(function (name) {
+          if (isTrackingParameter(name)) {
+            url.searchParams.delete(name);
+            removed += 1;
+          }
+        });
+        return { value: url.toString(), removed: removed };
+      }
+
+      function cleanUrls() {
+        var removed = 0;
+        var invalid = 0;
+        var lines = source.value.split(/\r?\n/);
+        var cleaned = lines.map(function (line) {
+          var trimmed = line.trim();
+          if (!trimmed) return "";
+          try {
+            var item = cleanUrl(trimmed);
+            removed += item.removed;
+            return item.value;
+          } catch (error) {
+            invalid += 1;
+            return line;
+          }
+        });
+        result.value = cleaned.join("\n");
+        if (!source.value.trim()) {
+          status.textContent = "Paste a URL to begin.";
+        } else if (invalid) {
+          status.textContent = "Removed " + removed + " tracking parameter" + (removed === 1 ? "" : "s") + ". Left " + invalid + " unrecognized line" + (invalid === 1 ? "" : "s") + " unchanged.";
+        } else {
+          status.textContent = "Removed " + removed + " tracking parameter" + (removed === 1 ? "" : "s") + ".";
+        }
+      }
+
+      document.getElementById("cleaner-form").addEventListener("submit", function (event) {
+        event.preventDefault();
+        cleanUrls();
+      });
+
+      document.getElementById("paste-button").addEventListener("click", async function () {
+        try {
+          source.value = await navigator.clipboard.readText();
+          cleanUrls();
+          source.focus();
+        } catch (error) {
+          status.textContent = "Your browser did not allow clipboard access. Paste into the first box instead.";
+        }
+      });
+
+      document.getElementById("copy-button").addEventListener("click", async function () {
+        if (!result.value) {
+          status.textContent = "There are no cleaned URLs to copy yet.";
+          return;
+        }
+        try {
+          await navigator.clipboard.writeText(result.value);
+          status.textContent = "Cleaned URLs copied.";
+        } catch (error) {
+          result.focus();
+          result.select();
+          status.textContent = "Select the cleaned URLs and copy them manually.";
+        }
+      });
+
+      document.getElementById("clear-button").addEventListener("click", function () {
+        source.value = "";
+        result.value = "";
+        status.textContent = "Cleared.";
+        source.focus();
+      });
+    })();
+  </script>
+</body>
+</html>
