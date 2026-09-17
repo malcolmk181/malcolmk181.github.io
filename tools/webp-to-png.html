@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WebP to PNG &middot; Malcolm Keyes</title>
+  <meta name="description" content="Convert WebP images to PNG locally, with Slack emoji sizing, transparency controls, drag and drop, file selection, and clipboard paste.">
+  <meta name="tool:category" content="Images">
+  <meta name="tool:order" content="40">
+  <script src="../assets/a11y-widget.js"></script>
+  <link rel="stylesheet" href="../assets/theme.css">
+  <style>
+    nav[aria-label="Breadcrumb"] { max-width: 40rem; margin: auto; padding: 1rem clamp(1rem, 5vw, 3rem) 0; }
+    main { padding-top: 1.5rem; }
+    fieldset { min-width: 0; padding: 0; border: 0; margin: 0; }
+    .drop-zone { padding: 1.25rem; border: 2px dashed var(--muted); border-radius: 0.6rem; background: var(--surface); }
+    .drop-zone.dragging { border-color: var(--accent); outline: 2px solid var(--accent); }
+    label { display: block; margin-bottom: 0.35rem; }
+    input, select, button, .download { font: inherit; }
+    input[type="file"] { max-width: 100%; }
+    input::file-selector-button, button, select, .download { min-height: 2.75rem; padding: 0.55rem 0.75rem; border: 1px solid var(--muted); border-radius: 0.35rem; color: var(--fg); background: var(--surface); }
+    button, input::file-selector-button { cursor: pointer; }
+    :is(input, select, button, a):focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+    .actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1rem; align-items: center; }
+    .settings { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr)); gap: 1rem; margin-top: 1.5rem; }
+    select { width: 100%; }
+    .check { display: flex; align-items: center; gap: 0.5rem; min-height: 2.75rem; }
+    input[type="checkbox"] { width: 1.2rem; height: 1.2rem; accent-color: var(--accent); }
+    input[type="color"] { width: 4rem; height: 2.75rem; padding: 0.2rem; }
+    .note { font-size: 0.9rem; }
+    #status { min-height: 1.5rem; overflow-wrap: anywhere; }
+    #source-info, #output-info { overflow-wrap: anywhere; }
+    .previews { display: flex; flex-wrap: wrap; gap: 1.5rem; align-items: start; }
+    figure { margin: 0; }
+    .checker { background-color: var(--bg); background-image: repeating-conic-gradient(var(--surface) 0% 25%, var(--border) 0% 50%); background-size: 1rem 1rem; border: 1px solid var(--muted); border-radius: 0.35rem; padding: 0.5rem; }
+    .checker img { display: block; width: 8rem; height: 8rem; object-fit: contain; }
+    .small img { width: 2rem; height: 2rem; }
+    figcaption { margin-top: 0.4rem; font-size: 0.9rem; }
+    .download { display: inline-flex; align-items: center; color: var(--accent); font-weight: 600; }
+    [hidden] { display: none !important; }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <nav aria-label="Breadcrumb"><a href="../index.html">Home</a> / <a href="index.html">Tools</a></nav>
+  <main id="main">
+    <h1>WebP to PNG</h1>
+    <p>Make a PNG ready for your next Slack emoji. Images stay on your device.</p>
+    <noscript><p>This converter needs JavaScript. Enable it to process images locally.</p></noscript>
+    <fieldset id="controls" disabled>
+      <legend>Choose an image</legend>
+      <div class="drop-zone" id="drop-zone">
+        <p>Drop an image here, choose a file, or paste with Ctrl+V / ⌘V.</p>
+        <label for="file">Image file</label>
+        <input id="file" type="file" accept="image/webp,image/png,image/jpeg,image/gif,.webp" aria-describedby="formats">
+        <div class="actions"><button type="button" id="paste">Paste image</button><button type="button" id="clear">Clear</button></div>
+        <p id="formats" class="note">One image at a time. WebP, PNG, JPEG, and GIF supported. Animated images become a still PNG of the first frame.</p>
+      </div>
+      <div class="settings">
+        <div><label for="size">Output size</label><select id="size"><option value="1024">Large square · 1024 × 1024</option><option value="512">Medium square · 512 × 512</option><option value="256">Small square · 256 × 256</option><option value="128">Slack emoji · 128 × 128</option><option value="64">Small emoji · 64 × 64</option><option value="original">Original dimensions</option></select></div>
+        <div><label for="fit">Square framing</label><select id="fit"><option value="contain">Fit whole image (add padding)</option><option value="cover">Fill square (crop center)</option></select></div>
+        <div><label class="check"><input id="transparent" type="checkbox" checked>Keep transparency</label></div>
+        <div id="background-control" hidden><label for="background">Background color</label><input id="background" type="color" value="#ffffff"></div>
+      </div>
+    </fieldset>
+    <p class="note">Transparency preserves transparent pixels and padding; it does not remove an existing background. Small images are enlarged for square output.</p>
+    <p class="note">Output starts at 1024 × 1024. <a href="https://slack.com/help/articles/206870177-Add-custom-emoji-and-aliases-to-your-workspace">Slack recommends</a> square images under 128 KB, ideally with transparency; choose a smaller preset if needed.</p>
+    <p id="status" role="status">Choose or paste an image to begin.</p>
+    <section id="result" aria-labelledby="result-heading" hidden>
+      <h2 id="result-heading">PNG preview</h2>
+      <p id="source-info"></p>
+      <div class="previews">
+        <figure><div class="checker"><img id="preview" alt="Converted PNG preview"></div><figcaption>Large preview</figcaption></figure>
+        <figure><div class="checker small"><img id="small-preview" alt="Converted PNG at a small emoji-like size"></div><figcaption>Emoji-size preview</figcaption></figure>
+      </div>
+      <p id="output-info"></p>
+      <a id="download" class="download" download="emoji.png">Download PNG</a>
+    </section>
+  </main>
+  <script type="module">
+    const $ = id => document.getElementById(id);
+    const status = $('status');
+    let bitmap = null;
+    let filename = 'emoji';
+    let outputURL = null;
+    let revision = 0;
+    const maxPixels = 16000000;
+
+    function discardOutput() {
+      $('result').hidden = true;
+      $('download').removeAttribute('href');
+      $('preview').removeAttribute('src');
+      $('small-preview').removeAttribute('src');
+      if (outputURL) URL.revokeObjectURL(outputURL);
+      outputURL = null;
+    }
+
+    async function render() {
+      $('background-control').hidden = $('transparent').checked;
+      $('fit').disabled = $('size').value === 'original';
+      if (!bitmap) return;
+      const current = ++revision;
+      discardOutput();
+      status.textContent = 'Creating PNG…';
+      try {
+        const canvas = document.createElement('canvas');
+        const original = $('size').value === 'original';
+        canvas.width = original ? bitmap.width : Number($('size').value);
+        canvas.height = original ? bitmap.height : Number($('size').value);
+        const context = canvas.getContext('2d');
+        if (!context) throw new Error('Image conversion is unavailable in this browser.');
+        if (!$('transparent').checked) {
+          context.fillStyle = $('background').value;
+          context.fillRect(0, 0, canvas.width, canvas.height);
+        }
+        const ratios = [canvas.width / bitmap.width, canvas.height / bitmap.height];
+        const ratio = original ? 1 : $('fit').value === 'cover' ? Math.max(...ratios) : Math.min(...ratios);
+        const width = bitmap.width * ratio;
+        const height = bitmap.height * ratio;
+        context.imageSmoothingEnabled = true;
+        context.imageSmoothingQuality = 'high';
+        context.drawImage(bitmap, (canvas.width - width) / 2, (canvas.height - height) / 2, width, height);
+        const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+        if (current !== revision) return;
+        if (!blob) throw new Error('Could not create a PNG. Try a smaller output size.');
+        outputURL = URL.createObjectURL(blob);
+        $('preview').src = outputURL;
+        $('small-preview').src = outputURL;
+        $('download').href = outputURL;
+        $('download').download = `${filename}.png`;
+        const square = canvas.width === canvas.height;
+        const compact = blob.size < 128000;
+        $('output-info').textContent = `${canvas.width} × ${canvas.height} pixels · ${(blob.size / 1000).toFixed(1)} KB · PNG. ` +
+          (square && compact ? 'Square and under Slack’s recommended 128 KB.' : !compact ? 'Above Slack’s recommended size. Try a smaller square preset.' : 'For Slack, choose a square preset.');
+        $('result').hidden = false;
+        status.textContent = 'PNG ready to download.';
+      } catch (error) {
+        if (current === revision) status.textContent = error.message || 'Could not convert this image.';
+      }
+    }
+
+    async function load(file) {
+      const current = ++revision;
+      discardOutput();
+      if (bitmap) bitmap.close();
+      bitmap = null;
+      $('source-info').textContent = '';
+      if (!file || file.size > 50 * 1024 * 1024) {
+        status.textContent = 'Choose an image smaller than 50 MB.';
+        return;
+      }
+      status.textContent = 'Reading image…';
+      let decoded;
+      try {
+        // Decode bytes locally; ImageBitmap freezes animated sources at frame one.
+        decoded = await createImageBitmap(file);
+        if (current !== revision) { decoded.close(); return; }
+        if (decoded.width * decoded.height > maxPixels || decoded.width > 16384 || decoded.height > 16384) {
+          decoded.close();
+          status.textContent = 'This image is too large. Choose one under 16 megapixels and 16,384 pixels per side.';
+          return;
+        }
+        bitmap = decoded;
+        filename = (file.name || 'clipboard-image').replace(/\.[^.]+$/, '').replace(/[^a-z0-9_-]+/gi, '-').replace(/^-+|-+$/g, '') || 'emoji';
+        $('source-info').textContent = `${file.name || 'Clipboard image'} · ${bitmap.width} × ${bitmap.height} pixels`;
+        await render();
+      } catch (error) {
+        if (current === revision) status.textContent = 'Could not read this image. Choose a valid WebP, PNG, JPEG, or GIF file.';
+      }
+    }
+
+    function acceptFiles(files) {
+      if (files.length !== 1) {
+        status.textContent = 'Please choose one image at a time.';
+        return;
+      }
+      load(files[0]);
+    }
+    $('file').addEventListener('change', event => { if (event.target.files.length) acceptFiles(event.target.files); });
+    for (const id of ['size', 'fit', 'transparent', 'background']) $(id).addEventListener('change', render);
+    document.addEventListener('dragover', event => {
+      if (Array.from(event.dataTransfer.types).includes('Files')) {
+        event.preventDefault();
+        event.dataTransfer.dropEffect = 'copy';
+        $('drop-zone').classList.add('dragging');
+      }
+    });
+    document.addEventListener('dragleave', event => { if (!event.relatedTarget) $('drop-zone').classList.remove('dragging'); });
+    document.addEventListener('drop', event => {
+      event.preventDefault();
+      $('drop-zone').classList.remove('dragging');
+      acceptFiles(event.dataTransfer.files);
+    });
+    document.addEventListener('paste', event => {
+      const files = Array.from(event.clipboardData?.files || []);
+      if (files.length) { event.preventDefault(); acceptFiles(files); }
+    });
+    $('paste').addEventListener('click', async () => {
+      const started = revision;
+      try {
+        if (!navigator.clipboard?.read) throw new Error('unavailable');
+        const items = await navigator.clipboard.read();
+        if (started !== revision) return;
+        for (const item of items) {
+          const type = item.types.find(type => type.startsWith('image/'));
+          if (type) {
+            const blob = await item.getType(type);
+            if (started === revision) await load(blob);
+            return;
+          }
+        }
+        status.textContent = 'No image found on the clipboard. Copy an image itself, or choose a file.';
+      } catch (error) {
+        if (started === revision) status.textContent = 'Clipboard access is unavailable. Try Ctrl+V / ⌘V, or choose a file.';
+      }
+    });
+    $('clear').addEventListener('click', () => {
+      revision++;
+      if (bitmap) bitmap.close();
+      bitmap = null;
+      discardOutput();
+      $('file').value = '';
+      $('source-info').textContent = '';
+      status.textContent = 'Cleared. Choose or paste another image.';
+      $('file').focus();
+    });
+    $('controls').disabled = false;
+  </script>
+</body>
+</html>
