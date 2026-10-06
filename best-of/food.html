@@ -7,6 +7,7 @@
   <meta name="description" content="Malcolm Keyes' picks for the best version of a dish, with where to get it.">
   <script src="/assets/a11y-widget.js"></script>
   <link rel="stylesheet" href="/assets/theme.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" integrity="sha512-Zcn6bjR/8RZbLEpLIeOwNtzREBAJnUKESxces60Mpoj+2okopSAcSUIUOseddDm0cxnGQzxIR7vJgsLZbdLE3w==" crossorigin="anonymous" referrerpolicy="no-referrer">
   <style>
     nav[aria-label="Breadcrumb"] {
       padding: 1rem clamp(1rem, 5vw, 3rem) 0;
@@ -21,6 +22,20 @@
 
     main > p {
       max-width: 40rem;
+    }
+
+    #best-map {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      min-height: 15rem;
+      margin-bottom: 1.5rem;
+      border: 1px solid var(--border);
+      border-radius: 0.5rem;
+      z-index: 0;
+    }
+
+    #best-map[hidden] {
+      display: none;
     }
 
     .best-toolbar {
@@ -162,11 +177,13 @@
 
     <p id="best-no-results" role="status" hidden>No places match your search.</p>
 
+    <div id="best-map" role="region" aria-label="Map of all places" hidden></div>
+
     <div class="best-groups" id="best-groups">
       <section class="best-group" aria-labelledby="dish-best-cheesesteak">
         <h2 id="dish-best-cheesesteak">Best Cheesesteak</h2>
         <ul class="best-list">
-          <li class="best-item">
+          <li class="best-item" data-lat="39.9533601" data-lng="-75.15947">
             <div class="best-entry">
               <div>
                 <h3>Uncle Gus&rsquo; Steaks</h3>
@@ -183,7 +200,7 @@
       <section class="best-group" aria-labelledby="dish-best-chicken-cheesesteak">
         <h2 id="dish-best-chicken-cheesesteak">Best Chicken Cheesesteak</h2>
         <ul class="best-list">
-          <li class="best-item">
+          <li class="best-item" data-lat="39.9502999" data-lng="-75.1668646">
             <div class="best-entry">
               <div>
                 <h3>Shay&rsquo;s Steaks and More</h3>
@@ -199,7 +216,7 @@
       <section class="best-group" aria-labelledby="dish-best-chicken-sandwich">
         <h2 id="dish-best-chicken-sandwich">Best Chicken Sandwich</h2>
         <ul class="best-list">
-          <li class="best-item">
+          <li class="best-item" data-lat="41.3108843" data-lng="-72.9223483">
             <div class="best-entry">
               <div>
                 <h3>Haven Hot Chicken</h3>
@@ -215,7 +232,7 @@
       <section class="best-group" aria-labelledby="dish-best-steak">
         <h2 id="dish-best-steak">Best Steak</h2>
         <ul class="best-list">
-          <li class="best-item">
+          <li class="best-item" data-lat="1.304606" data-lng="103.8089925">
             <div class="best-entry">
               <div>
                 <h3>Burnt Ends</h3>
@@ -230,6 +247,7 @@
       </section>
     </div>
   </main>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js" integrity="sha512-BwHfrr4c9kmRkLw6iXFdzcdWV/PGkVgiIyIWLLlTSXzWQzxuSg4DiQUCpauz/EWjgk5TYQqX/kvn9pG1NpYfqg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script>
     (function () {
       "use strict";
@@ -262,6 +280,62 @@
 
       function byName(a, b) {
         return nameOf(a).localeCompare(nameOf(b));
+      }
+
+      // Global map: one pin per card, built from each card's data-lat/data-lng.
+      // If Leaflet fails to load, the map stays hidden and the cards still work.
+      var mapEl = document.getElementById("best-map");
+      var map = null;
+      var pins = [];
+
+      function initMap() {
+        if (typeof L === "undefined") return;
+        mapEl.hidden = false;
+        map = L.map(mapEl);
+        L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+          maxZoom: 19,
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+        groups.forEach(function (group) {
+          itemsOf(group).forEach(function (item) {
+            var lat = parseFloat(item.dataset.lat);
+            var lng = parseFloat(item.dataset.lng);
+            if (isNaN(lat) || isNaN(lng)) return;
+            var popup = document.createElement("div");
+            var title = document.createElement("strong");
+            title.textContent = nameOf(item);
+            var dish = document.createElement("div");
+            dish.textContent = nameOf(group);
+            popup.appendChild(title);
+            popup.appendChild(dish);
+            var link = item.querySelector(".map-link");
+            if (link) {
+              var a = document.createElement("a");
+              a.href = link.href;
+              a.textContent = "Open in Google Maps";
+              popup.appendChild(a);
+            }
+            var marker = L.marker([lat, lng], { title: nameOf(item), alt: nameOf(item) }).bindPopup(popup);
+            pins.push({ item: item, marker: marker });
+          });
+        });
+        updateMap();
+      }
+
+      function updateMap() {
+        if (!map) return;
+        var bounds = [];
+        pins.forEach(function (pin) {
+          if (pin.item.hidden) {
+            pin.marker.remove();
+          } else {
+            pin.marker.addTo(map);
+            bounds.push(pin.marker.getLatLng());
+          }
+        });
+        if (bounds.length > 0) {
+          map.fitBounds(L.latLngBounds(bounds), { padding: [30, 30], maxZoom: 15 });
+        }
       }
 
       function sortAll(by) {
@@ -302,6 +376,7 @@
           if (anyVisible) visibleCount += 1;
         });
         noResults.hidden = visibleCount !== 0;
+        updateMap();
       }
 
       sortSelect.addEventListener("change", function () {
@@ -314,6 +389,7 @@
 
       toolbar.hidden = false;
       sortAll(sortSelect.value);
+      initMap();
     })();
   </script>
 </body>
