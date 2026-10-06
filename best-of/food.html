@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Best of Food &middot; Malcolm Keyes</title>
+  <meta name="description" content="Malcolm Keyes' picks for the best version of a dish, with where to get it.">
+  <script src="/assets/a11y-widget.js"></script>
+  <link rel="stylesheet" href="/assets/theme.css">
+  <style>
+    nav[aria-label="Breadcrumb"] {
+      padding: 1rem clamp(1rem, 5vw, 3rem) 0;
+      max-width: 40rem;
+      margin: 0 auto;
+    }
+
+    main {
+      padding-top: 1.5rem;
+    }
+
+    .best-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .best-item {
+      border: 1px solid var(--border);
+      border-radius: 0.5rem;
+      padding: 1rem;
+    }
+
+    .best-item h2 {
+      margin: 0 0 0.25rem;
+      font-size: 1.1rem;
+    }
+
+    .best-item p {
+      margin: 0.25rem 0 0;
+    }
+
+    .best-place {
+      color: var(--fg);
+      font-weight: 600;
+    }
+
+    .map-link {
+      display: inline-block;
+      margin-top: 0.5rem;
+      padding-block: 0.25rem;
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <nav aria-label="Breadcrumb">
+    <a href="/">&larr; Home</a>
+  </nav>
+
+  <main id="main">
+    <h1>Best of Food</h1>
+    <p>The best version of a dish I&rsquo;ve had, and where to get it.</p>
+
+    <ul class="best-list">
+      <li class="best-item">
+        <h2>Best Cheesesteak</h2>
+        <p class="best-place">Uncle Gus&rsquo; Steaks</p>
+        <p>Reading Terminal Market, Philadelphia, PA</p>
+        <a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=Uncle+Gus+Steaks+Reading+Terminal+Market+Philadelphia+PA">Open in Google Maps</a>
+      </li>
+    </ul>
+  </main>
+</body>
+</html>
