@@ -126,6 +126,10 @@
       margin: 0.25rem 0 0;
     }
 
+    .best-entry--no-map {
+      grid-template-columns: 1fr;
+    }
+
     .best-note {
       color: var(--fg);
     }
@@ -180,6 +184,23 @@
     <div id="best-map" role="region" aria-label="Map of all places" hidden></div>
 
     <div class="best-groups" id="best-groups">
+      <section class="best-group" aria-labelledby="dish-best-bagel">
+        <h2 id="dish-best-bagel">Best Bagel</h2>
+        <ul class="best-list">
+          <li class="best-item" data-lat="41.3131451" data-lng="-72.921487">
+            <div class="best-entry">
+              <div>
+                <h3>Olmo</h3>
+                <p>93 Whitney Ave, New Haven, CT</p>
+                <p class="best-note">Hands down the best, including the sandwiches and schmear.</p>
+                <a class="map-link" href="https://www.google.com/maps/place/olmo+bagel/data=!4m2!3m1!1s0x89e7d9bd126652bd:0xf7e8fbc40c6a8f2a">Open in Google Maps</a>
+                <p class="best-updated">Last updated <time datetime="2026-10-06">October 6, 2026</time></p>
+              </div>
+              <iframe class="map" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2996.8031818513787!2d-72.921487!3d41.3131451!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89e7d9bd126652bd%3A0xf7e8fbc40c6a8f2a!2sOlmo!5e0!3m2!1sen!2sus!4v1791328176120!5m2!1sen!2sus" title="Map of Olmo" width="600" height="450" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+          </li>
+        </ul>
+      </section>
       <section class="best-group" aria-labelledby="dish-best-biscuits-gravy">
         <h2 id="dish-best-biscuits-gravy">Best Biscuits &amp; Gravy</h2>
         <ul class="best-list">
@@ -208,6 +229,47 @@
                 <p class="best-updated">Last updated <time datetime="2026-10-06">October 6, 2026</time></p>
               </div>
               <iframe class="map" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12234.406480748372!2d-75.18591901284182!3d39.9502999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c6c73f9a217da5%3A0x262895bd119287e7!2sShays%20Steaks%20and%20More!5e0!3m2!1sen!2sus!4v1791294319616!5m2!1sen!2sus" title="Map of Shay&rsquo;s Steaks and More" width="600" height="450" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+          </li>
+        </ul>
+      </section>
+      <section class="best-group" aria-labelledby="dish-best-burger">
+        <h2 id="dish-best-burger">Best Burger</h2>
+        <ul class="best-list">
+          <li class="best-item">
+            <div class="best-entry best-entry--no-map">
+              <div>
+                <h3>Cookout</h3>
+                <p>Multiple locations</p>
+                <p class="best-note">Best late-night fast food burger. Get the double burger, cheddar style.</p>
+                <p class="best-updated">Last updated <time datetime="2026-10-06">October 6, 2026</time></p>
+              </div>
+            </div>
+          </li>
+          <li class="best-item">
+            <div class="best-entry best-entry--no-map">
+              <div>
+                <h3>In-N-Out</h3>
+                <p>Multiple locations</p>
+                <p class="best-note">Best fast food burger.</p>
+                <p class="best-updated">Last updated <time datetime="2026-10-06">October 6, 2026</time></p>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </section>
+      <section class="best-group" aria-labelledby="dish-best-burrito">
+        <h2 id="dish-best-burrito">Best Burrito</h2>
+        <ul class="best-list">
+          <li class="best-item" data-lat="37.7526463" data-lng="-122.4183182">
+            <div class="best-entry">
+              <div>
+                <h3>Taquer&iacute;a El Farolito</h3>
+                <p>2779 Mission St, San Francisco, CA</p>
+                <a class="map-link" href="https://www.google.com/maps?ftid=0x808f7e474d4864e5:0xc3479e37f17ac921">Open in Google Maps</a>
+                <p class="best-updated">Last updated <time datetime="2026-10-06">October 6, 2026</time></p>
+              </div>
+              <iframe class="map" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3154.5949265065433!2d-122.41831819999997!3d37.752646299999995!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x808f7e474d4864e5%3A0xc3479e37f17ac921!2sTaquer%C3%ADa%20El%20Farolito!5e0!3m2!1sen!2sus!4v1791328565768!5m2!1sen!2sus" title="Map of Taquer&iacute;a El Farolito" width="600" height="450" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
           </li>
         </ul>
@@ -245,6 +307,22 @@
           </li>
         </ul>
       </section>
+      <section class="best-group" aria-labelledby="dish-best-dim-sum">
+        <h2 id="dish-best-dim-sum">Best Dim Sum</h2>
+        <ul class="best-list">
+          <li class="best-item" data-lat="22.278395" data-lng="114.184853">
+            <div class="best-entry">
+              <div>
+                <h3>West Villa Restaurant (Causeway Bay)</h3>
+                <p>33 Hysan Ave, Causeway Bay, Hong Kong</p>
+                <a class="map-link" href="https://www.google.com/maps/place/West+Villa+Restaurant+(Causeway+Bay)/data=!4m2!3m1!1s0x34040053fed19ccb:0x20b81a8454016f1d">Open in Google Maps</a>
+                <p class="best-updated">Last updated <time datetime="2026-10-06">October 6, 2026</time></p>
+              </div>
+              <iframe class="map" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3691.989304144026!2d114.18485299999999!3d22.278395000000003!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x34040053fed19ccb%3A0x20b81a8454016f1d!2sWest%20Villa%20Restaurant%20(Causeway%20Bay)!5e0!3m2!1sen!2sus!4v1791327947586!5m2!1sen!2sus" title="Map of West Villa Restaurant (Causeway Bay)" width="600" height="450" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+          </li>
+        </ul>
+      </section>
       <section class="best-group" aria-labelledby="dish-best-gyro">
         <h2 id="dish-best-gyro">Best Gyro</h2>
         <ul class="best-list">
@@ -262,6 +340,87 @@
           </li>
         </ul>
       </section>
+      <section class="best-group" aria-labelledby="dish-best-hummus">
+        <h2 id="dish-best-hummus">Best Hummus</h2>
+        <ul class="best-list">
+          <li class="best-item" data-lat="36.8340091" data-lng="-76.3071448">
+            <div class="best-entry">
+              <div>
+                <h3>Ten10 Restaurant</h3>
+                <p>622 Effingham St Ste A, Portsmouth, VA</p>
+                <a class="map-link" href="https://www.google.com/maps?ftid=0x89baa3896c5e32b9:0xace9eeb77310f68d">Open in Google Maps</a>
+                <p class="best-updated">Last updated <time datetime="2026-10-06">October 6, 2026</time></p>
+              </div>
+              <iframe class="map" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d52063747.494897485!2d-171.33731039999998!3d37.206904099999996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89baa3896c5e32b9%3A0xace9eeb77310f68d!2sTen10%20Restaurant!5e0!3m2!1sen!2sus!4v1791327622104!5m2!1sen!2sus" title="Map of Ten10 Restaurant" width="600" height="450" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+          </li>
+        </ul>
+      </section>
+      <section class="best-group" aria-labelledby="dish-best-kbbq">
+        <h2 id="dish-best-kbbq">Best KBBQ</h2>
+        <ul class="best-list">
+          <li class="best-item" data-lat="40.7476718" data-lng="-73.9869686">
+            <div class="best-entry">
+              <div>
+                <h3>Jongro BBQ</h3>
+                <p>22 W 32nd St (2nd floor), New York, NY</p>
+                <a class="map-link" href="https://www.google.com/maps?ftid=0x89c259a8ef657243:0x9185d801317e2d9d">Open in Google Maps</a>
+                <p class="best-updated">Last updated <time datetime="2026-10-06">October 6, 2026</time></p>
+              </div>
+              <iframe class="map" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.6524799163444!2d-73.9869686!3d40.74767179999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c259a8ef657243%3A0x9185d801317e2d9d!2sJongro%20BBQ!5e0!3m2!1sen!2sus!4v1791328459303!5m2!1sen!2sus" title="Map of Jongro BBQ" width="600" height="450" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+          </li>
+        </ul>
+      </section>
+      <section class="best-group" aria-labelledby="dish-best-mojito">
+        <h2 id="dish-best-mojito">Best Mojito</h2>
+        <ul class="best-list">
+          <li class="best-item" data-lat="40.7183756" data-lng="-73.9589491">
+            <div class="best-entry">
+              <div>
+                <h3>Gran Torino</h3>
+                <p>131 Berry St, Brooklyn, NY</p>
+                <a class="map-link" href="https://www.google.com/maps/place/gran+torino+brooklyn/data=!4m2!3m1!1s0x89c259bc17487491:0xef34d21b32f27558">Open in Google Maps</a>
+                <p class="best-updated">Last updated <time datetime="2026-10-06">October 6, 2026</time></p>
+              </div>
+              <iframe class="map" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3023.9836874319553!2d-73.9589491!3d40.7183756!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c259bc17487491%3A0xef34d21b32f27558!2sGran%20Torino!5e0!3m2!1sen!2sus!4v1791328274929!5m2!1sen!2sus" title="Map of Gran Torino" width="600" height="450" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+          </li>
+        </ul>
+      </section>
+      <section class="best-group" aria-labelledby="dish-best-pizza">
+        <h2 id="dish-best-pizza">Best Pizza</h2>
+        <ul class="best-list">
+          <li class="best-item" data-lat="41.3060796" data-lng="-72.9304171">
+            <div class="best-entry">
+              <div>
+                <h3>BAR</h3>
+                <p>254 Crown St, New Haven, CT</p>
+                <p class="best-note">Get the mashed potato bacon pizza.</p>
+                <a class="map-link" href="https://www.google.com/maps/place/bar+pizza+new+haven/data=!4m2!3m1!1s0x89e7d84cc654b05d:0x784e4dfb48df52c0">Open in Google Maps</a>
+                <p class="best-updated">Last updated <time datetime="2026-10-06">October 6, 2026</time></p>
+              </div>
+              <iframe class="map" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5994.255941748253!2d-72.9304171!3d41.306079600000004!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89e7d84cc654b05d%3A0x784e4dfb48df52c0!2sBAR!5e0!3m2!1sen!2sus!4v1791328053513!5m2!1sen!2sus" title="Map of BAR" width="600" height="450" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+          </li>
+        </ul>
+      </section>
+      <section class="best-group" aria-labelledby="dish-best-southern-comfort-food">
+        <h2 id="dish-best-southern-comfort-food">Best Southern Comfort Food</h2>
+        <ul class="best-list">
+          <li class="best-item" data-lat="33.7728043" data-lng="-84.3798348">
+            <div class="best-entry">
+              <div>
+                <h3>Mary Mac&rsquo;s Tea Room</h3>
+                <p>224 Ponce De Leon Ave NE, Atlanta, GA</p>
+                <a class="map-link" href="https://www.google.com/maps/place/Mary+Mac%27s+Tea+Room/data=!4m2!3m1!1s0x88f5046c25254a81:0xc83a97db2139189f">Open in Google Maps</a>
+                <p class="best-updated">Last updated <time datetime="2026-10-06">October 6, 2026</time></p>
+              </div>
+              <iframe class="map" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6633.060380678753!2d-84.3798348!3d33.7728043!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88f5046c25254a81%3A0xc83a97db2139189f!2sMary%20Mac%27s%20Tea%20Room!5e0!3m2!1sen!2sus!4v1791328375820!5m2!1sen!2sus" title="Map of Mary Mac&rsquo;s Tea Room" width="600" height="450" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+          </li>
+        </ul>
+      </section>
       <section class="best-group" aria-labelledby="dish-best-steak">
         <h2 id="dish-best-steak">Best Steak</h2>
         <ul class="best-list">
@@ -274,6 +433,22 @@
                 <p class="best-updated">Last updated <time datetime="2026-10-06">October 6, 2026</time></p>
               </div>
               <iframe class="map" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.784080156738!2d103.80641757553049!3d1.3046113617184183!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31da197262439f2d%3A0xb324b3b59b409d43!2sBurnt%20Ends!5e0!3m2!1sen!2sus!4v1791294419346!5m2!1sen!2sus" title="Map of Burnt Ends" width="600" height="450" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+          </li>
+        </ul>
+      </section>
+      <section class="best-group" aria-labelledby="dish-best-toasted-ravioli">
+        <h2 id="dish-best-toasted-ravioli">Best Toasted Ravioli</h2>
+        <ul class="best-list">
+          <li class="best-item" data-lat="38.73787" data-lng="-90.3634207">
+            <div class="best-entry">
+              <div>
+                <h3>Lombardo&rsquo;s Family of Restaurants</h3>
+                <p>10488 Natural Bridge Rd, St. Louis, MO</p>
+                <a class="map-link" href="https://www.google.com/maps/place/Lombardo%27s+Family+of+Restaurants/data=!4m2!3m1!1s0x0:0xb71c732753f94178">Open in Google Maps</a>
+                <p class="best-updated">Last updated <time datetime="2026-10-06">October 6, 2026</time></p>
+              </div>
+              <iframe class="map" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3112.1260325750673!2d-90.3634207!3d38.73787!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x87df36a7a71fc7ab%3A0xb71c732753f94178!2sLombardo%27s%20Family%20of%20Restaurants!5e0!3m2!1sen!2sus!4v1791327818770!5m2!1sen!2sus" title="Map of Lombardo&rsquo;s Family of Restaurants" width="600" height="450" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
           </li>
         </ul>
