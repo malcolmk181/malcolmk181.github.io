@@ -47,6 +47,16 @@
       font-weight: 600;
     }
 
+    .map {
+      display: block;
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      height: auto;
+      margin-top: 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: 0.375rem;
+    }
+
     .map-link {
       display: inline-block;
       margin-top: 0.5rem;
@@ -70,7 +80,15 @@
         <h2>Best Cheesesteak</h2>
         <p class="best-place">Uncle Gus&rsquo; Steaks</p>
         <p>Reading Terminal Market, Philadelphia, PA</p>
+        <iframe class="map" src="https://www.google.com/maps?q=Uncle+Gus+Steaks+Reading+Terminal+Market+Philadelphia+PA&amp;output=embed" title="Map of Uncle Gus&rsquo; Steaks" width="600" height="450" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
         <a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=Uncle+Gus+Steaks+Reading+Terminal+Market+Philadelphia+PA">Open in Google Maps</a>
+      </li>
+      <li class="best-item">
+        <h2>Best Chicken Cheesesteak</h2>
+        <p class="best-place">Shay&rsquo;s Steaks and More</p>
+        <p>5th &amp; Wolf St, South Philadelphia, PA</p>
+        <iframe class="map" src="https://www.google.com/maps?q=Shay%27s+Steaks+5th+and+Wolf+St+Philadelphia+PA&amp;output=embed" title="Map of Shay&rsquo;s Steaks and More" width="600" height="450" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        <a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=Shay%27s+Steaks+5th+and+Wolf+St+Philadelphia+PA">Open in Google Maps</a>
       </li>
     </ul>
   </main>

@@ -86,7 +86,7 @@ For a page to work correctly with it:
 - `index.html` is the home page. It links to `/tools/` (the tools landing page) via a `<nav aria-label="Primary">`.
 - `/tools/index.html` is the tools landing page: a searchable, sortable list of every tool page. The list itself renders fully in plain HTML — the search box and sort `<select>` are a JS-only enhancement on top, so the list of tools/links is still there and usable with JavaScript disabled.
 - Individual tools live at `tools/<slug>.html`, each a self-contained single file per the default approach above.
-- `/best-of/food.html` is a hand-written list of favorite dishes (dish, place, Google Maps link), linked from the home page's primary nav. Other "best of" pages, if added, go alongside it at `best-of/<topic>.html`. Map links use the `https://www.google.com/maps/search/?api=1&query=...` URL format (a plain link, no embedded map or third-party script).
+- `/best-of/food.html` is a hand-written list of favorite dishes (dish, place, embedded Google Maps map plus an "Open in Google Maps" link), linked from the home page's primary nav. Other "best of" pages, if added, go alongside it at `best-of/<topic>.html`. Maps are a lazy-loaded keyless `<iframe>` (`https://www.google.com/maps?q=...&output=embed`, with a descriptive `title`); the fallback link uses `https://www.google.com/maps/search/?api=1&query=...`.
 - Every page other than the home page includes a `<nav aria-label="Breadcrumb">` near the top with a link back to `/` (see `/tools/index.html` for the pattern).
 
 ### Tools list generation
