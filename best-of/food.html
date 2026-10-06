@@ -23,6 +23,56 @@
       max-width: 40rem;
     }
 
+    .best-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .best-toolbar[hidden] {
+      display: none;
+    }
+
+    .best-toolbar > div {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      flex: 1 1 12rem;
+    }
+
+    .best-toolbar label {
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    .best-toolbar input,
+    .best-toolbar select {
+      font: inherit;
+      color: var(--fg);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 0.375rem;
+      padding: 0.5rem 0.6rem;
+    }
+
+    #best-no-results {
+      border: 1px dashed var(--border);
+      border-radius: 0.5rem;
+      padding: 1rem;
+    }
+
+    .best-groups {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .best-group h2 {
+      margin: 0 0 0.75rem;
+      font-size: 1.25rem;
+    }
+
     .best-list {
       list-style: none;
       margin: 0;
@@ -52,18 +102,13 @@
       }
     }
 
-    .best-item h2 {
+    .best-item h3 {
       margin: 0 0 0.25rem;
       font-size: 1.1rem;
     }
 
     .best-item p {
       margin: 0.25rem 0 0;
-    }
-
-    .best-place {
-      color: var(--fg);
-      font-weight: 600;
     }
 
     .best-note {
@@ -101,57 +146,175 @@
     <h1>Best of Food</h1>
     <p>The best version of a dish I&rsquo;ve had, and where to get it.</p>
 
-    <ul class="best-list">
-      <li class="best-item">
-        <div class="best-entry">
-          <div>
-            <h2>Best Cheesesteak</h2>
-            <p class="best-place">Uncle Gus&rsquo; Steaks</p>
-            <p>Reading Terminal Market, Philadelphia, PA</p>
-            <p class="best-note">Get it with Cooper Sharp and no onions for the best sandwich.</p>
-            <a class="map-link" href="https://www.google.com/maps/place/Uncle+Gus%27+Steaks/@39.9533601,-75.15947,17z/data=!3m1!4b1!4m6!3m5!1s0x89c6c7470b174999:0x43ba46d5db5c7e0!8m2!3d39.9533601!4d-75.15947!16s%2Fg%2F11wqw9bnf4">Open in Google Maps</a>
-            <p class="best-updated">Last updated <time datetime="2026-10-06">October 6, 2026</time></p>
-          </div>
-          <iframe class="map" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3058.464597819317!2d-75.16204492372944!3d39.95336418371052!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c6c7470b174999%3A0x43ba46d5db5c7e0!2sUncle%20Gus%27%20Steaks!5e0!3m2!1sen!2sus!4v1791294390195!5m2!1sen!2sus" title="Map of Uncle Gus&rsquo; Steaks" width="600" height="450" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-        </div>
-      </li>
-      <li class="best-item">
-        <div class="best-entry">
-          <div>
-            <h2>Best Chicken Cheesesteak</h2>
-            <p class="best-place">Shay&rsquo;s Steaks and More</p>
-            <p>1526 Sansom St, Philadelphia, PA</p>
-            <a class="map-link" href="https://maps.app.goo.gl/FkhrULTxCaJAuH4FA">Open in Google Maps</a>
-            <p class="best-updated">Last updated <time datetime="2026-10-06">October 6, 2026</time></p>
-          </div>
-          <iframe class="map" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12234.406480748372!2d-75.18591901284182!3d39.9502999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c6c73f9a217da5%3A0x262895bd119287e7!2sShays%20Steaks%20and%20More!5e0!3m2!1sen!2sus!4v1791294319616!5m2!1sen!2sus" title="Map of Shay&rsquo;s Steaks and More" width="600" height="450" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-        </div>
-      </li>
-      <li class="best-item">
-        <div class="best-entry">
-          <div>
-            <h2>Best Steak</h2>
-            <p class="best-place">Burnt Ends</p>
-            <p>7 Dempsey Rd, #01-02, Singapore</p>
-            <a class="map-link" href="https://www.google.com/maps/place/burnt+ends+singapore/data=!4m2!3m1!1s0x31da197262439f2d:0xb324b3b59b409d43">Open in Google Maps</a>
-            <p class="best-updated">Last updated <time datetime="2026-10-06">October 6, 2026</time></p>
-          </div>
-          <iframe class="map" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.784080156738!2d103.80641757553049!3d1.3046113617184183!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31da197262439f2d%3A0xb324b3b59b409d43!2sBurnt%20Ends!5e0!3m2!1sen!2sus!4v1791294419346!5m2!1sen!2sus" title="Map of Burnt Ends" width="600" height="450" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-        </div>
-      </li>
-      <li class="best-item">
-        <div class="best-entry">
-          <div>
-            <h2>Best Chicken Sandwich</h2>
-            <p class="best-place">Haven Hot Chicken</p>
-            <p>21 Whitney Ave, New Haven, CT</p>
-            <a class="map-link" href="https://www.google.com/maps?ftid=0x89e7d976f3ded0fb:0xe5b588426dea4c11">Open in Google Maps</a>
-            <p class="best-updated">Last updated <time datetime="2026-10-06">October 6, 2026</time></p>
-          </div>
-          <iframe class="map" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d767208.2206571538!2d-74.14183072187502!3d41.310884300000005!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89e7d976f3ded0fb%3A0xe5b588426dea4c11!2sHaven%20Hot%20Chicken%20-%20New%20Haven!5e0!3m2!1sen!2sus!4v1791294505480!5m2!1sen!2sus" title="Map of Haven Hot Chicken" width="600" height="450" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-        </div>
-      </li>
-    </ul>
+    <div class="best-toolbar" id="best-toolbar" hidden>
+      <div>
+        <label for="best-search">Search</label>
+        <input type="search" id="best-search" placeholder="Search by dish, place, or note">
+      </div>
+      <div>
+        <label for="best-sort">Sort by</label>
+        <select id="best-sort">
+          <option value="name">Name (A&ndash;Z)</option>
+          <option value="date">Last updated (newest)</option>
+        </select>
+      </div>
+    </div>
+
+    <p id="best-no-results" role="status" hidden>No places match your search.</p>
+
+    <div class="best-groups" id="best-groups">
+      <section class="best-group" aria-labelledby="dish-best-cheesesteak">
+        <h2 id="dish-best-cheesesteak">Best Cheesesteak</h2>
+        <ul class="best-list">
+          <li class="best-item">
+            <div class="best-entry">
+              <div>
+                <h3>Uncle Gus&rsquo; Steaks</h3>
+                <p>Reading Terminal Market, Philadelphia, PA</p>
+                <p class="best-note">Get it with Cooper Sharp and no onions for the best sandwich.</p>
+                <a class="map-link" href="https://www.google.com/maps/place/Uncle+Gus%27+Steaks/@39.9533601,-75.15947,17z/data=!3m1!4b1!4m6!3m5!1s0x89c6c7470b174999:0x43ba46d5db5c7e0!8m2!3d39.9533601!4d-75.15947!16s%2Fg%2F11wqw9bnf4">Open in Google Maps</a>
+                <p class="best-updated">Last updated <time datetime="2026-10-06">October 6, 2026</time></p>
+              </div>
+              <iframe class="map" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3058.464597819317!2d-75.16204492372944!3d39.95336418371052!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c6c7470b174999%3A0x43ba46d5db5c7e0!2sUncle%20Gus%27%20Steaks!5e0!3m2!1sen!2sus!4v1791294390195!5m2!1sen!2sus" title="Map of Uncle Gus&rsquo; Steaks" width="600" height="450" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+          </li>
+        </ul>
+      </section>
+      <section class="best-group" aria-labelledby="dish-best-chicken-cheesesteak">
+        <h2 id="dish-best-chicken-cheesesteak">Best Chicken Cheesesteak</h2>
+        <ul class="best-list">
+          <li class="best-item">
+            <div class="best-entry">
+              <div>
+                <h3>Shay&rsquo;s Steaks and More</h3>
+                <p>1526 Sansom St, Philadelphia, PA</p>
+                <a class="map-link" href="https://maps.app.goo.gl/FkhrULTxCaJAuH4FA">Open in Google Maps</a>
+                <p class="best-updated">Last updated <time datetime="2026-10-06">October 6, 2026</time></p>
+              </div>
+              <iframe class="map" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12234.406480748372!2d-75.18591901284182!3d39.9502999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c6c73f9a217da5%3A0x262895bd119287e7!2sShays%20Steaks%20and%20More!5e0!3m2!1sen!2sus!4v1791294319616!5m2!1sen!2sus" title="Map of Shay&rsquo;s Steaks and More" width="600" height="450" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+          </li>
+        </ul>
+      </section>
+      <section class="best-group" aria-labelledby="dish-best-chicken-sandwich">
+        <h2 id="dish-best-chicken-sandwich">Best Chicken Sandwich</h2>
+        <ul class="best-list">
+          <li class="best-item">
+            <div class="best-entry">
+              <div>
+                <h3>Haven Hot Chicken</h3>
+                <p>21 Whitney Ave, New Haven, CT</p>
+                <a class="map-link" href="https://www.google.com/maps?ftid=0x89e7d976f3ded0fb:0xe5b588426dea4c11">Open in Google Maps</a>
+                <p class="best-updated">Last updated <time datetime="2026-10-06">October 6, 2026</time></p>
+              </div>
+              <iframe class="map" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d767208.2206571538!2d-74.14183072187502!3d41.310884300000005!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89e7d976f3ded0fb%3A0xe5b588426dea4c11!2sHaven%20Hot%20Chicken%20-%20New%20Haven!5e0!3m2!1sen!2sus!4v1791294505480!5m2!1sen!2sus" title="Map of Haven Hot Chicken" width="600" height="450" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+          </li>
+        </ul>
+      </section>
+      <section class="best-group" aria-labelledby="dish-best-steak">
+        <h2 id="dish-best-steak">Best Steak</h2>
+        <ul class="best-list">
+          <li class="best-item">
+            <div class="best-entry">
+              <div>
+                <h3>Burnt Ends</h3>
+                <p>7 Dempsey Rd, #01-02, Singapore</p>
+                <a class="map-link" href="https://www.google.com/maps/place/burnt+ends+singapore/data=!4m2!3m1!1s0x31da197262439f2d:0xb324b3b59b409d43">Open in Google Maps</a>
+                <p class="best-updated">Last updated <time datetime="2026-10-06">October 6, 2026</time></p>
+              </div>
+              <iframe class="map" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.784080156738!2d103.80641757553049!3d1.3046113617184183!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31da197262439f2d%3A0xb324b3b59b409d43!2sBurnt%20Ends!5e0!3m2!1sen!2sus!4v1791294419346!5m2!1sen!2sus" title="Map of Burnt Ends" width="600" height="450" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+          </li>
+        </ul>
+      </section>
+    </div>
   </main>
+  <script>
+    (function () {
+      "use strict";
+
+      var container = document.getElementById("best-groups");
+      var groups = Array.prototype.slice.call(container.querySelectorAll(".best-group"));
+      var toolbar = document.getElementById("best-toolbar");
+      var noResults = document.getElementById("best-no-results");
+      var searchInput = document.getElementById("best-search");
+      var sortSelect = document.getElementById("best-sort");
+
+      function itemsOf(group) {
+        return Array.prototype.slice.call(group.querySelectorAll(".best-item"));
+      }
+
+      function nameOf(el) {
+        return el.querySelector("h2, h3").textContent.trim();
+      }
+
+      function dateOf(item) {
+        var time = item.querySelector("time");
+        return time ? time.getAttribute("datetime") : "";
+      }
+
+      function newestDate(group) {
+        return itemsOf(group).reduce(function (newest, item) {
+          return dateOf(item) > newest ? dateOf(item) : newest;
+        }, "");
+      }
+
+      function byName(a, b) {
+        return nameOf(a).localeCompare(nameOf(b));
+      }
+
+      function sortAll(by) {
+        groups.forEach(function (group) {
+          var list = group.querySelector(".best-list");
+          itemsOf(group).sort(function (a, b) {
+            if (by === "date") {
+              return dateOf(b).localeCompare(dateOf(a)) || byName(a, b);
+            }
+            return byName(a, b);
+          }).forEach(function (item) {
+            list.appendChild(item);
+          });
+        });
+        groups.slice().sort(function (a, b) {
+          if (by === "date") {
+            return newestDate(b).localeCompare(newestDate(a)) || byName(a, b);
+          }
+          return byName(a, b);
+        }).forEach(function (group) {
+          container.appendChild(group);
+        });
+      }
+
+      function filterAll(query) {
+        var normalized = query.trim().toLowerCase();
+        var visibleCount = 0;
+        groups.forEach(function (group) {
+          var groupName = nameOf(group).toLowerCase();
+          var anyVisible = false;
+          itemsOf(group).forEach(function (item) {
+            var haystack = groupName + " " + item.textContent.toLowerCase();
+            var matches = normalized === "" || haystack.indexOf(normalized) !== -1;
+            item.hidden = !matches;
+            if (matches) anyVisible = true;
+          });
+          group.hidden = !anyVisible;
+          if (anyVisible) visibleCount += 1;
+        });
+        noResults.hidden = visibleCount !== 0;
+      }
+
+      sortSelect.addEventListener("change", function () {
+        sortAll(sortSelect.value);
+      });
+
+      searchInput.addEventListener("input", function () {
+        filterAll(searchInput.value);
+      });
+
+      toolbar.hidden = false;
+      sortAll(sortSelect.value);
+    })();
+  </script>
 </body>
 </html>
